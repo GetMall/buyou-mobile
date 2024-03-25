@@ -45,7 +45,6 @@ fun Header() {
             .fillMaxWidth()
             .height(200.dp)
     ) {
-        // Imagem de fundo
         Image(
             painter = painterResource(id = R.drawable.fundo_roxo),
             contentDescription = "Background Image",
@@ -54,7 +53,6 @@ fun Header() {
             contentScale = ContentScale.Crop
         )
 
-        // Conteúdo do cabeçalho
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -67,14 +65,12 @@ fun Header() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                // Placeholder para o logo da empresa
                 Image(
                     painter = painterResource(id = R.drawable.logotipo_branco_buyu),
                     contentDescription = "Logo da Empresa",
                     modifier = Modifier.size(48.dp)
                 )
 
-                // Placeholders para ícones de carrinho e conta
                 Image(
                     painter = painterResource(id = R.drawable.boneco_carrinho),
                     contentDescription = "Logo da Empresa",
@@ -84,7 +80,6 @@ fun Header() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Barra de pesquisa
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
@@ -148,7 +143,6 @@ fun ListaShoppings(nomeShopping: String, logoShopping: Int) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        // Header do shopping
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
@@ -182,7 +176,6 @@ fun ListaShoppings(nomeShopping: String, logoShopping: Int) {
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        // Lista de lojas
         Row(
             modifier = Modifier.horizontalScroll(rememberScrollState())
         ) {
@@ -218,9 +211,8 @@ fun ListaLojas(nomeShopping: String, nomeLoja: String, logoLoja: Int) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(0.dp) // Espaçamento entre as lojas
+        horizontalArrangement = Arrangement.spacedBy(0.dp)
     ) {
-        // Placeholder para o logo da loja
         val logo: Painter = painterResource(id = logoLoja)
         Spacer(modifier = Modifier.width(16.dp))
         Column {
@@ -233,9 +225,7 @@ fun ListaLojas(nomeShopping: String, nomeLoja: String, logoLoja: Int) {
                     .background(Color.Transparent)
             )
 
-            Spacer(modifier = Modifier.height(4.dp)) // Espaço entre o logo e o texto
-
-            // Mostra o nome da loja
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = nomeLoja,
                 fontWeight = FontWeight.Bold,
