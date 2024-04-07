@@ -19,10 +19,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,6 +39,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,7 +64,6 @@ class MainActivity2 : ComponentActivity() {
 
     @Composable
     fun TelaInicio(name: String, modifier: Modifier = Modifier) {
-
         Column {
             Header()
             ShoppingsProximos()
@@ -67,6 +75,11 @@ class MainActivity2 : ComponentActivity() {
 
     @Composable
     fun Header() {
+
+        val (endereco, setEndereco) = remember {
+            mutableStateOf("")
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -110,40 +123,47 @@ class MainActivity2 : ComponentActivity() {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(40.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(Color.White),
-                        contentAlignment = Alignment.Center
-                    ) {
+                )
+                {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(55.dp)
+                        .clip(RoundedCornerShape(10.dp)),
+                    contentAlignment = Alignment.Center
+                )
+                    {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Spacer(modifier = Modifier.width(16.dp))
-                            Text(
-                                text = "Buscar por CEP",
-                                fontSize = 16.sp,
-                                color = Color.Black
+                            TextField(value = endereco, onValueChange = setEndereco,
+                                modifier = Modifier
+                                    .height(70.dp),
+                                placeholder = {Text("Digite o CEP")},
+                                colors = TextFieldDefaults.colors(
+                                    focusedIndicatorColor = Color.White,
+                                    unfocusedIndicatorColor = Color.White,
+                                    unfocusedContainerColor = Color.White,
+                                    focusedContainerColor = Color.White
+                                ),
                             )
+
                             Spacer(modifier = Modifier.weight(1f))
+
+                            Box(
+                                modifier = Modifier
+                                    .size(55.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(Color.Black),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.lupa),
+                                    contentDescription = "Logo da Empresa",
+                                    modifier = Modifier.size(28.dp)
+                                )
+                            }
                         }
                     }
-
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(Color.Black),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.lupa),
-                            contentDescription = "Logo da Empresa",
-                            modifier = Modifier.size(28.dp)
-                        )
-                    }
-
                     Spacer(modifier = Modifier.width(8.dp))
                 }
             }
