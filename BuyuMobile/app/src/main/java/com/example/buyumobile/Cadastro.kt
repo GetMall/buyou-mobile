@@ -36,7 +36,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.buyumobile.model.CadastroUsuario
+import com.example.buyumobile.network.RetrofitService
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
+import retrofit2.Callback
+import retrofit2.Call
+import retrofit2.Response
+
 
 class Cadastro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +64,9 @@ class Cadastro : ComponentActivity() {
 @Composable
 fun Cadastro(name: String, modifier: Modifier = Modifier) {
     val context = LocalContext.current
+
+    val errorApi = remember { mutableStateOf("") }
+    val api = RetrofitService.getApiUsuarios()
 
     val (usuario, setUsuario) = remember {mutableStateOf("")}
     val (email, setEmail) = remember { mutableStateOf("") }
@@ -153,8 +162,21 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
 
             Button(
                 onClick = {
-                    val telaInicio = Intent(context, Inicio::class.java)
-                    context.startActivity(telaInicio)
+                    val novoCadastroUsuario = CadastroUsuario(0, usuario, email, password)
+                    val post = api.postUsuario(novoCadastroUsuario)
+                    post.enqueue(object : Callback<CadastroUsuario> {
+                        override fun onResponse(call: Call<CadastroUsuario>, response: Response<CadastroUsuario>) {
+                            if (response.isSuccessful) {
+                                val mainActivity = Intent(context, MainActivity::class.java)
+                                context.startActivity(mainActivity)
+                            } else {
+                                errorApi.value = "Erro ao criar usuário"
+                            }
+                        }
+                        override fun onFailure(call: Call<CadastroUsuario>, t: Throwable) {
+                            errorApi.value = "Erro ao criar usuário"
+                        }
+                    })
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(Color(0xFF692FA3))
