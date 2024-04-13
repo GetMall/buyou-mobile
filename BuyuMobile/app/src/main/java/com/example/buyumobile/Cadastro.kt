@@ -37,6 +37,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
+import kotlin.jvm.internal.MagicApiIntrinsics
 
 class Cadastro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,8 +94,8 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { /* Handle next action */ }),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFF3F3F3),
-                    unfocusedBorderColor = Color.White
+                    focusedBorderColor = Color(0xFF692FA3),
+                    unfocusedBorderColor = Color(0xFFF3F3F3)
                 ),
             )
 
@@ -110,8 +111,8 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { /* Handle next action */ }),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFF3F3F3),
-                    unfocusedBorderColor = Color.White
+                    focusedBorderColor = Color(0xFF692FA3),
+                    unfocusedBorderColor = Color(0xFFF3F3F3)
                 ),
             )
 
@@ -127,8 +128,8 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { }),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFF3F3F3),
-                    unfocusedBorderColor = Color.White
+                    focusedBorderColor = Color(0xFF692FA3),
+                    unfocusedBorderColor = Color(0xFFF3F3F3)
                 ),
             )
 
@@ -144,8 +145,8 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { }),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFF3F3F3),
-                    unfocusedBorderColor = Color.White
+                    focusedBorderColor = Color(0xFF692FA3),
+                    unfocusedBorderColor = Color(0xFFF3F3F3)
                 ),
             )
 
@@ -174,8 +175,8 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
 
             Button(
                 onClick = {
-                    val telaCadastro = Intent(context, Cadastro::class.java)
-                    context.startActivity(telaCadastro)
+                    val mainActivity = Intent(context, MainActivity::class.java)
+                    context.startActivity(mainActivity)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(Color.White)

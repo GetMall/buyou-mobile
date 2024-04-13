@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -99,12 +100,13 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                 value = email,
                 onValueChange = setEmail,
                 label = { Text("Email", style = TextStyle(color = Color(0xFF692FA3))) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .background(Color(0xFFF3F3F3)),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { /* Handle next action */ }),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFF3F3F3),
-                    unfocusedBorderColor = Color.White
+                    focusedBorderColor = Color(0xFF692FA3),
+                    unfocusedBorderColor = Color(0xFFF3F3F3)
                 ),
             )
 
@@ -114,12 +116,13 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                 value = password,
                 onValueChange = setPassword,
                 label = { Text("Senha", style = TextStyle(color = Color(0xFF692FA3))) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .background(Color(0xFFF3F3F3)),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { }),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFF3F3F3),
-                    unfocusedBorderColor = Color.White
+                    focusedBorderColor = Color(0xFF692FA3),
+                    unfocusedBorderColor = Color(0xFFF3F3F3)
                 ),
             )
 
@@ -147,7 +150,10 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = {},
+                onClick = {
+                    val telaCadastro = Intent(context, Cadastro::class.java)
+                    context.startActivity(telaCadastro)
+                },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(Color.White)
             ) {
