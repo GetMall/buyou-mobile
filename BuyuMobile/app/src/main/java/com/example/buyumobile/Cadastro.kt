@@ -37,7 +37,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
-import kotlin.jvm.internal.MagicApiIntrinsics
 
 class Cadastro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -154,7 +153,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
 
             Button(
                 onClick = {
-                    val telaInicio = Intent(context, MainActivity2::class.java)
+                    val telaInicio = Intent(context, Inicio::class.java)
                     context.startActivity(telaInicio)
                 },
                 modifier = Modifier.fillMaxWidth(),
