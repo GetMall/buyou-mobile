@@ -36,7 +36,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.buyumobile.model.LoginUsuario
+import com.example.buyumobile.network.RetrofitService
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
+import retrofit2.Callback
+import retrofit2.Call
+import retrofit2.Response
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +62,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LoginScreen(name: String, modifier: Modifier = Modifier) {
     val context = LocalContext.current
+
+    val errorApi = remember { mutableStateOf("") }
+    val api = RetrofitService.getApiUsuarios()
 
     val (email, setEmail) = remember { mutableStateOf("") }
     val (password, setPassword) = remember { mutableStateOf("") }
@@ -122,8 +130,22 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
 
             Button(
                 onClick = {
-                    val telaInicio = Intent(context, Inicio::class.java)
-                    context.startActivity(telaInicio)
+                    val loginUsuario = LoginUsuario(email, password)
+                    val post = api.loginUsuario(loginUsuario)
+                    post.enqueue(object : Callback<LoginUsuario> {
+                        override fun onResponse(call: Call<LoginUsuario>, response: Response<LoginUsuario>) {
+                            if (response.isSuccessful) {
+                                val inicio = Intent(context, Inicio::class.java)
+                                context.startActivity(inicio)
+                            } else {
+                                errorApi.value = "Erro ao fazer login"
+                            }
+                        }
+
+                        override fun onFailure(call: Call<LoginUsuario>, t: Throwable) {
+                            errorApi.value = "Erro ao fazer login"
+                        }
+                    })
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(Color(0xFF692FA3))
