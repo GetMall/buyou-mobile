@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -63,7 +64,7 @@ class Inicio : ComponentActivity() {
 
     @Composable
     fun TelaInicio(name: String, modifier: Modifier = Modifier) {
-        Column {
+        Column (modifier= Modifier.verticalScroll(rememberScrollState())){
             Header()
             Text(
                 text = "Shoppings próximos a você",
@@ -93,6 +94,8 @@ class Inicio : ComponentActivity() {
             ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
             ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
             ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
+
+            MenuFooter()
         }
     }
 
@@ -127,12 +130,42 @@ class Inicio : ComponentActivity() {
                     .align(Alignment.CenterStart)
                     .height(60.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.White,
-                unfocusedBorderColor = Color.White,
-                    focusedLabelColor = Color.White,
-                    unfocusedLabelColor = Color.White
+                    focusedBorderColor = Color.Yellow,
+                    unfocusedBorderColor =  Color.Yellow,
+                    focusedLabelColor =  Color.Yellow,
+                    unfocusedLabelColor =  Color.Yellow,
+                    focusedTextColor = Color.White,
             ),
             )
+        }
+    }
+    @Composable
+    fun MenuFooter() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Sobre",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal
+                )
+                Text(
+                    text = "Contato",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal
+                )
+                Text(
+                    text = "Termos de uso",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal
+                )
+            }
         }
     }
 
@@ -174,7 +207,8 @@ class Inicio : ComponentActivity() {
             Spacer(modifier = Modifier.height(15.dp))
 
             LazyRow (
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(start = 20.dp)
             ){
                 items(2) {
                     Column (
@@ -243,12 +277,13 @@ class Inicio : ComponentActivity() {
             Spacer(modifier = Modifier.height(15.dp))
 
             LazyRow (
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(start = 20.dp)
             ){
                 items(5) {
                     Column (
                         modifier = Modifier
-                            .padding(start = 4.dp)
+                            .padding(start = 0.dp)
                             .width(100.dp)
                     ){
                         Image(
