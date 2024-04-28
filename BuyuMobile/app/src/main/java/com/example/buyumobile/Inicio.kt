@@ -151,17 +151,12 @@ class Inicio : ComponentActivity() {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Sobre",
+                    text = "Início",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal
                 )
                 Text(
-                    text = "Contato",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Normal
-                )
-                Text(
-                    text = "Termos de uso",
+                    text = "Pedidos",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal
                 )
