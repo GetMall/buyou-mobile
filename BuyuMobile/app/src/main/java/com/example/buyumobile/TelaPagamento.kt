@@ -136,7 +136,7 @@ fun Resumo() {
         )
         Box(modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(150.dp)
             .background(Color(0xEEF0EFF0), shape = RoundedCornerShape(8.dp))) {
             Column (modifier = Modifier.padding(16.dp)) {
                 Row (
@@ -212,7 +212,7 @@ fun FormaPagamento(){
         Spacer(modifier = Modifier.height(16.dp))
         Box(modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .height(120.dp)
             .background(Color(0xEEF0EFF0), shape = RoundedCornerShape(8.dp))) {
             Text(text = "O código do Pix será exibido após a confirmação de compra e poderá ser " +
                     "copiado para pagamento no seu app do seu banco de preferência. " +
