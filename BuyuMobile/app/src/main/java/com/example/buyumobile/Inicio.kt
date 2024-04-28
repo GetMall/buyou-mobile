@@ -1,10 +1,12 @@
 package com.example.buyumobile
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -38,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -64,6 +68,8 @@ class Inicio : ComponentActivity() {
 
     @Composable
     fun TelaInicio(name: String, modifier: Modifier = Modifier) {
+        val context = LocalContext.current
+
         Column (modifier= Modifier.verticalScroll(rememberScrollState())){
             Header()
             Text(
@@ -87,6 +93,14 @@ class Inicio : ComponentActivity() {
                     .fillMaxWidth(),
                 color = Color.Black
             )
+
+            Button(onClick = {
+                val intent = Intent(context, TelaPagamento::class.java)
+                context.startActivity(intent)
+            }) {
+                Text("Ir para Lojas")
+            }
+
             ListaShoppings(nomeShopping = "Shopping Cidade de São Paulo", logoShopping = painterResource(id = R.drawable.cidade_sp_log))
             ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
             ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
@@ -254,14 +268,6 @@ class Inicio : ComponentActivity() {
 
                 Spacer(modifier = Modifier.width(0.dp))
 
-                Image(
-                    painter = logoShopping,
-                    contentDescription = "Shopping Logo",
-                    modifier = Modifier
-                        .size(24.dp)
-                        .padding(start = 8.dp, end = 16.dp)
-                )
-
                 Text(
                     text = nomeShopping,
                     fontSize = 12.sp,
@@ -288,12 +294,15 @@ class Inicio : ComponentActivity() {
                                 .size(50.dp)
                                 .clip(RoundedCornerShape(10.dp))
                                 .background(Color.White)
+                                .clickable {
+
+                                },
                         )
                         Text(
                             text = "Renner",
                             fontWeight = FontWeight.Bold,
                             fontSize = 10.sp,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     }
                 }
