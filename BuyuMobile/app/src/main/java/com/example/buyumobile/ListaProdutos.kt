@@ -72,10 +72,9 @@ fun ListaProdutos(name: String, modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            MenuItem(text = "Categoria 1")
-            MenuItem(text = "Categoria 2")
-            MenuItem(text = "Categoria 3")
-            MenuItem(text = "Categoria 4")
+            MenuItem(text = "Vestuário")
+            MenuItem(text = "Calçados")
+            MenuItem(text = "Acessórios")
         }
         Row(
             modifier = Modifier.fillMaxWidth(),

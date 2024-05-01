@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,14 +30,13 @@ import com.example.buyumobile.ui.theme.BuyuMobileTheme
 
 
 @Composable
-fun TelaProduto(name: String, modifier: Modifier = Modifier) {
-    //val Beige = Color(0xFFD7BFA6)
+fun TelaProduto(name: String, description: String, price: String, modifier: Modifier = Modifier) {
+
     val Purple = Color(0xFF692FA3)
 
     Column(
         modifier = Modifier
             .fillMaxSize(),
-
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -50,15 +50,64 @@ fun TelaProduto(name: String, modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Imagem do produto
         Image(
             painter = painterResource(id = R.drawable.camisetapolo),
             contentDescription = null,
             modifier = Modifier
-                .size(200.dp) // Tamanho da imagem
+                .size(300.dp) // Tamanho da imagem
                 .padding(16.dp) // Espaçamento ao redor da imagem
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        // Nome do produto
+
+       // Spacer(modifier = Modifier.height(5.dp))
+
+        Text(
+            text = "",
+            fontSize = 20.sp,
+            color = Purple,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+        Text(
+            text = name,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(1.dp))
+
+        // Preço do produto
+        Text(
+            text = "",
+            fontSize = 20.sp,
+            color = Purple,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+        Text(
+            text = price,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Descrição do produto
+        Text(
+            text = "",
+            fontSize = 20.sp,
+            color = Purple,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+        Text(
+            text = description,
+            fontSize = 16.sp,
+            modifier = Modifier.padding(horizontal = 30.dp)
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
 
         // Row com os botões
         Row(
@@ -78,8 +127,6 @@ fun TelaProduto(name: String, modifier: Modifier = Modifier) {
                 Text(text = "Favoritar", color = Color.White)
             }
         }
-
-        Spacer(modifier = Modifier.height(32.dp))
 
         Button(
             onClick = { /* Ação do botão Adicionar ao Carrinho */ },
@@ -157,8 +204,12 @@ fun MainMenu(
 @Composable
 fun GreetingPreview4() {
     BuyuMobileTheme {
-        TelaProduto("Android")
+        TelaProduto(
+            name = "Camisa Polo Clássica Masculina",
+            description = "Esta camisa polo clássica é feita com tecido " +
+                    "de alta qualidade e oferece conforto durante todo o dia.",
+            price = "$39.99"
+        )
     }
 }
 
-//comentario Teste
