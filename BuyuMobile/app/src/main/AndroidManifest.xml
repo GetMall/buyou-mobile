@@ -13,6 +13,11 @@
         android:theme="@style/Theme.BuyuMobile"
         tools:targetApi="31">
         <activity
+            android:name=".TelaPagamento"
+            android:exported="false"
+            android:label="@string/title_activity_tela_pagamento"
+            android:theme="@style/Theme.BuyuMobile" />
+        <activity
             android:name=".Cadastro"
             android:exported="false"
             android:label="@string/title_activity_cadastro"
