@@ -2,4 +2,7 @@
     <string name="app_name">Buyu Mobile</string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="title_activity_cadastro">Cadastro</string>
+    <string name="title_activity_tela_pagamento">TelaPagamento</string>
+    <string name="title_activity_tela_produtos">TelaProdutos</string>
+    <string name="title_activity_tela_desc_produto">TelaDescProduto</string>
 </resources>
