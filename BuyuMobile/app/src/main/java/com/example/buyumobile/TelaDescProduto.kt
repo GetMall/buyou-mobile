@@ -179,7 +179,7 @@ fun HeaderDescProduto() {
             contentScale = ContentScale.Crop
         )
 
-        Text(text = "R. Hadock Lobo",
+        Text(text = "R. Haddock Lobo, 595",
             fontSize = 16.sp,
             color = Color.White,
             modifier = Modifier
