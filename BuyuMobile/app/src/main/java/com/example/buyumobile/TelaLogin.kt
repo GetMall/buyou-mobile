@@ -137,7 +137,7 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                     post.enqueue(object : Callback<LoginUsuario> {
                         override fun onResponse(call: Call<LoginUsuario>, response: Response<LoginUsuario>) {
                             if (response.isSuccessful) {
-
+                                println("Login realizado com sucesso")
                             } else {
                                 errorApi.value = "Erro ao fazer login"
                             }

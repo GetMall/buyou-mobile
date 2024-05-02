@@ -68,7 +68,6 @@ class Inicio : ComponentActivity() {
 
     @Composable
     fun TelaInicio(name: String, modifier: Modifier = Modifier) {
-        val context = LocalContext.current
 
         Column (modifier= Modifier.verticalScroll(rememberScrollState())){
             Header()
@@ -93,13 +92,6 @@ class Inicio : ComponentActivity() {
                     .fillMaxWidth(),
                 color = Color.Black
             )
-
-            Button(onClick = {
-                val intent = Intent(context, TelaPagamento::class.java)
-                context.startActivity(intent)
-            }) {
-                Text("Ir para Lojas")
-            }
 
             ListaShoppings(nomeShopping = "Shopping Cidade de São Paulo", logoShopping = painterResource(id = R.drawable.cidade_sp_log))
             ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
@@ -193,7 +185,8 @@ class Inicio : ComponentActivity() {
                 Image(
                     painter = logoShoppingProximo,
                     contentDescription = "Logo do Shopping",
-                    modifier = Modifier.size(35.dp)
+                    modifier = Modifier
+                        .size(35.dp),
                 )
 
                 Spacer(modifier = Modifier.width(0.dp))
@@ -314,6 +307,7 @@ class Inicio : ComponentActivity() {
 
     @Composable
     fun ListaLojas(nomeShopping: String, nomeLoja: String, logoLoja: Painter) {
+        val context = LocalContext.current
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -326,6 +320,10 @@ class Inicio : ComponentActivity() {
                     painter = logoLoja,
                     contentDescription = "Logo da Loja",
                     modifier = Modifier
+                        .clickable {
+                            val intent = Intent(context, TelaProdutos::class.java)
+                            context.startActivity(intent)
+                        }
                         .size(45.dp)
                         .clip(RoundedCornerShape(4.dp))
                         .background(Color.Transparent)

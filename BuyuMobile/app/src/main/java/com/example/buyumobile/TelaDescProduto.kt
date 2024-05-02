@@ -1,25 +1,31 @@
 package com.example.buyumobile
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,10 +34,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
 
+class TelaDescProduto : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            BuyuMobileTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    TelaDescProduto("Android")
+                }
+            }
+        }
+    }
+}
 
 @Composable
-fun TelaProduto(name: String, description: String, price: String, modifier: Modifier = Modifier) {
-
+fun TelaDescProduto(name: String, modifier: Modifier = Modifier) {
     val Purple = Color(0xFF692FA3)
 
     Column(
@@ -42,11 +63,7 @@ fun TelaProduto(name: String, description: String, price: String, modifier: Modi
     ) {
 
         // Menu horizontal
-        MainMenu(
-            address = "Rua Principal, 123 - Cidade",
-            profileIcon = Icons.Default.Person,
-            cartIcon = Icons.Default.ShoppingCart,
-            )
+        HeaderDescProduto()
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -61,7 +78,7 @@ fun TelaProduto(name: String, description: String, price: String, modifier: Modi
 
         // Nome do produto
 
-       // Spacer(modifier = Modifier.height(5.dp))
+        // Spacer(modifier = Modifier.height(5.dp))
 
         Text(
             text = "",
@@ -86,7 +103,7 @@ fun TelaProduto(name: String, description: String, price: String, modifier: Modi
             modifier = Modifier.padding(horizontal = 16.dp)
         )
         Text(
-            text = price,
+            text = "price",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 16.dp)
@@ -102,7 +119,7 @@ fun TelaProduto(name: String, description: String, price: String, modifier: Modi
             modifier = Modifier.padding(horizontal = 16.dp)
         )
         Text(
-            text = description,
+            text = "description",
             fontSize = 16.sp,
             modifier = Modifier.padding(horizontal = 30.dp)
         )
@@ -142,74 +159,41 @@ fun TelaProduto(name: String, description: String, price: String, modifier: Modi
 
         Spacer(modifier = Modifier.height(16.dp))
     }
-
 }
 
 @Composable
-
-fun MainMenu(
-    address: String,
-    profileIcon: ImageVector,
-    cartIcon: ImageVector,
-) {
-
-    val Purple = Color(0xFF692FA3)
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp)
-                .background(color = Purple)
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Imagem do canto esquerdo
-            Image(
-                painter = painterResource(id = R.drawable.logotipo_branco_buyu),
-                contentDescription = null,
-                modifier = Modifier
-
-                    .size(50.dp),
-
-                )
-
-            // Endereço no meio
-            Text(
-                text = address,
-                color = Color.White,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .weight(1f),
-                fontSize = 10.sp
-            )
-
-            // Ícones do canto direito
-            Icon(
-                imageVector = cartIcon,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.padding(end = 16.dp)
-            )
-            Icon(
-                imageVector = profileIcon,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.padding(end = 16.dp)
-            )
-        }
+fun HeaderDescProduto() {
+    val (endereco, setEndereco) = remember {
+        mutableStateOf("")
     }
-}
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.fundo_roxo),
+            contentDescription = "Background Image",
+            modifier = Modifier
+                .fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview4() {
-    BuyuMobileTheme {
-        TelaProduto(
-            name = "Camisa Polo Clássica Masculina",
-            description = "Esta camisa polo clássica é feita com tecido " +
-                    "de alta qualidade e oferece conforto durante todo o dia.",
-            price = "$39.99"
+        Text(text = "R. Hadock Lobo",
+            fontSize = 16.sp,
+            color = Color.White,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(start = 0.dp)
         )
     }
 }
 
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview5() {
+    BuyuMobileTheme {
+        TelaDescProduto("Android")
+    }
+}
