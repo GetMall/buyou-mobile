@@ -68,8 +68,8 @@ class Inicio : ComponentActivity() {
 
     @Composable
     fun TelaInicio(name: String, modifier: Modifier = Modifier) {
-
-        Column (modifier= Modifier.verticalScroll(rememberScrollState())){
+        val context = LocalContext.current
+        Column (modifier= Modifier.verticalScroll(rememberScrollState())) {
             Header()
             Text(
                 text = "Shoppings próximos a você",
@@ -80,9 +80,11 @@ class Inicio : ComponentActivity() {
                     .fillMaxWidth(),
                 color = Color.Black
             )
-            ShoppingsProximos(nomeShoppingProximo = "Shopping", logoShoppingProximo = painterResource(
-                id = R.drawable.eldorado_logo
-            ))
+            ShoppingsProximos(
+                nomeShoppingProximo = "Shopping", logoShoppingProximo = painterResource(
+                    id = R.drawable.eldorado_logo
+                )
+            )
             Text(
                 text = "Shoppings populares",
                 fontSize = 15.sp,
@@ -93,12 +95,17 @@ class Inicio : ComponentActivity() {
                 color = Color.Black
             )
 
+            Button(onClick = {
+                val intent = Intent(context, TelaProdutos::class.java)
+                context.startActivity(intent)
+            }) {
+                Text("Ver todas as lojas")
+            }
+
+
+
             ListaShoppings(nomeShopping = "Shopping Cidade de São Paulo", logoShopping = painterResource(id = R.drawable.cidade_sp_log))
             ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
-            ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
-            ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
-            ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
-            ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
             ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
 
             MenuFooter()
@@ -150,7 +157,7 @@ class Inicio : ComponentActivity() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(24.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -320,10 +327,12 @@ class Inicio : ComponentActivity() {
                     painter = logoLoja,
                     contentDescription = "Logo da Loja",
                     modifier = Modifier
-                        .clickable {
-                            val intent = Intent(context, TelaProdutos::class.java)
-                            context.startActivity(intent)
-                        }
+                        .clickable (
+                            onClick = {
+                                val intent = Intent(context, TelaProdutos::class.java)
+                                context.startActivity(intent)
+                            }
+                        )
                         .size(45.dp)
                         .clip(RoundedCornerShape(4.dp))
                         .background(Color.Transparent)

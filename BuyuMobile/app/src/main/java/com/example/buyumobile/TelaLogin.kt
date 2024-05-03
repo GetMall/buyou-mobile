@@ -2,6 +2,7 @@ package com.example.buyumobile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -138,13 +139,16 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                         override fun onResponse(call: Call<LoginUsuario>, response: Response<LoginUsuario>) {
                             if (response.isSuccessful) {
                                 println("Login realizado com sucesso")
+                                Log.d("Login realizado com sucesso", "Outra coisa")
                             } else {
                                 errorApi.value = "Erro ao fazer login"
+
                             }
                         }
 
                         override fun onFailure(call: Call<LoginUsuario>, t: Throwable) {
                             errorApi.value = "Erro ao fazer login"
+                            Log.d("Login realizado com sucesso", "Outra aadasdasdsa")
                         }
                     })
                 },

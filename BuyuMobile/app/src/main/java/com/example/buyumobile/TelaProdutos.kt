@@ -53,7 +53,6 @@ class TelaProdutos : ComponentActivity() {
 
 @Composable
 fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
-    HeaderProdutos()
     Column(
         modifier = Modifier
             .fillMaxSize()
