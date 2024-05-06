@@ -167,7 +167,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                     post.enqueue(object : Callback<CadastroUsuario> {
                         override fun onResponse(call: Call<CadastroUsuario>, response: Response<CadastroUsuario>) {
                             if (response.isSuccessful) {
-                                val mainActivity = Intent(context, MainActivity::class.java)
+                                val mainActivity = Intent(context, Inicio::class.java)
                                 context.startActivity(mainActivity)
                             } else {
                                 errorApi.value = "Erro ao criar usuário"
