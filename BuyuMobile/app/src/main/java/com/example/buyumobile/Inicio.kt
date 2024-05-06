@@ -192,6 +192,7 @@ class Inicio : ComponentActivity() {
     }
     @Composable
     fun MenuFooter() {
+        val context = LocalContext.current
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -206,11 +207,12 @@ class Inicio : ComponentActivity() {
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal
                 )
-                Text(
-                    text = "Pedidos",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Normal
-                )
+                Button(onClick = {
+                    val intent = Intent(context, TelaUltimosPedidos::class.java)
+                    context.startActivity(intent)
+                }) {
+                    Text("Perfil")
+                }
             }
         }
     }
@@ -365,7 +367,7 @@ class Inicio : ComponentActivity() {
                     painter = logoLoja,
                     contentDescription = "Logo da Loja",
                     modifier = Modifier
-                        .clickable (
+                        .clickable(
                             onClick = {
                                 val intent = Intent(context, TelaProdutos::class.java)
                                 context.startActivity(intent)

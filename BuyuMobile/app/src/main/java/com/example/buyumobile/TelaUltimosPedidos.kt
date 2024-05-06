@@ -3,7 +3,6 @@ package com.example.buyumobile
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -24,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,11 +34,12 @@ class TelaUltimosPedidos : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BuyuMobileTheme {
+                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TelaUltimosPedidosContent("Android")
+                    TelaUltimosPedidos("Android")
                 }
             }
         }
@@ -49,7 +47,7 @@ class TelaUltimosPedidos : ComponentActivity() {
 }
 
 @Composable
-fun TelaUltimosPedidosContent(name: String, modifier: Modifier = Modifier) {
+fun TelaUltimosPedidos(name: String, modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +55,6 @@ fun TelaUltimosPedidosContent(name: String, modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Headerrr()
 
         Spacer(modifier = Modifier.height(46.dp))
         Text(
@@ -146,51 +143,10 @@ fun CardPedido() {
     }
 }
 
-@Composable
-fun Headerrr() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(80.dp)
-            .background(color = Color(0xFF692FA3))
-            .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.logotipo_branco_buyu),
-            contentDescription = null,
-            modifier = Modifier.size(60.dp)
-        )
-
-        Spacer(modifier = Modifier.width(36.dp))
-
-        Text(
-            text = "R. Haddock Lobo, 595",
-            color = Color.White
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Image(
-            painter = painterResource(id = R.drawable.icone_carrinho),
-            contentDescription = null,
-            modifier = Modifier.size(25.dp)
-        )
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        Image(
-            painter = painterResource(id = R.drawable.icone_perfil),
-            contentDescription = null,
-            modifier = Modifier.size(25.dp)
-        )
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview2() {
+fun GreetingPreview4() {
     BuyuMobileTheme {
-        TelaUltimosPedidosContent("Android")
+        TelaUltimosPedidos("Android")
     }
 }

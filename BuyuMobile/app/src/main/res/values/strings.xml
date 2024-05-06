@@ -5,4 +5,5 @@
     <string name="title_activity_tela_pagamento">TelaPagamento</string>
     <string name="title_activity_tela_produtos">TelaProdutos</string>
     <string name="title_activity_tela_desc_produto">TelaDescProduto</string>
+    <string name="title_activity_tela_ultimos_pedidos">TelaUltimosPedidos</string>
 </resources>
