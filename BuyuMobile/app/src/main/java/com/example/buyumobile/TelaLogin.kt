@@ -134,14 +134,13 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                     val loginUsuario = LoginUsuario(email, password)
                     val post = api.loginUsuario(loginUsuario)
                     val inicio = Intent(context, Inicio::class.java)
+                    context.startActivity(inicio)
                     post.enqueue(object : Callback<LoginUsuario> {
                         override fun onResponse(call: Call<LoginUsuario>, response: Response<LoginUsuario>) {
                             if (response.isSuccessful) {
                                 Log.d("Login realizado com sucesso", "Outra coisa")
-                                context.startActivity(inicio)
                             } else {
                                 errorApi.value = "Erro ao fazer login"
-
                             }
                         }
 

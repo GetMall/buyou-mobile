@@ -2,6 +2,7 @@ package com.example.buyumobile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -33,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -48,7 +50,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.buyumobile.model.ListaShopping
+import com.example.buyumobile.network.ApiShoppings
+import com.example.buyumobile.network.RetrofitService
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class Inicio : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,24 +110,38 @@ class Inicio : ComponentActivity() {
                 Text("Ver todas as lojas")
             }
 
+            val shopping = remember { mutableStateListOf<ListaShopping>() }
 
-            get.enqueue(object : Callback<List<ListaShopping>> {
-                override fun onResponse(call: Call<List<ListaShopping>>, response: Response<List<ListaShopping>>) {
-                    if (response.isSuccessful) {
+            val erroApi = remember {
+                mutableStateOf("")
+            }
+
+            val apiShoppings = RetrofitService.getApiShoppings()
+
+            val get = apiShoppings.getShoppings()
+
+            get.enqueue(object : Callback<List<ListaShopping>>{
+                override fun onResponse( call: Call<List<ListaShopping>>, response: Response<List<ListaShopping>>){
+                    if(response.isSuccessful){
                         val lista = response.body()
-                        lista?.forEach {
-                            ListaShoppings(
-                                nomeShopping = it.nome,
-                                logoShopping = painterResource(id = R.drawable.eldorado_logo)
-                            )
+                        Log.d("deu certo???", "Outra coisa")
+                        if (lista != null){
+                          shopping.clear()
+                            shopping.addAll(lista)
                         }
                     }
                 }
-
-                override fun onFailure(call: Call<List<LoginUsuario>>, t: Throwable) {
-                    println("Erro")
+                override fun onFailure(call: Call<List<ListaShopping>>, t: Throwable) {
+                    erroApi.value = t.message!!
                 }
             })
+
+            shopping.forEach {
+                ListaShoppings(
+                    nomeShopping = it.nome,
+                    logoShopping = painterResource(id = R.drawable.eldorado_logo)
+                )
+            }
 
            // ListaShoppings(nomeShopping = "Shopping Cidade de São Paulo", logoShopping = painterResource(id = R.drawable.cidade_sp_log))
           //  ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
