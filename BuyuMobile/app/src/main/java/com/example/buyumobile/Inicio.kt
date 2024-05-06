@@ -103,11 +103,27 @@ class Inicio : ComponentActivity() {
             }
 
 
+            get.enqueue(object : Callback<List<ListaShopping>> {
+                override fun onResponse(call: Call<List<ListaShopping>>, response: Response<List<ListaShopping>>) {
+                    if (response.isSuccessful) {
+                        val lista = response.body()
+                        lista?.forEach {
+                            ListaShoppings(
+                                nomeShopping = it.nome,
+                                logoShopping = painterResource(id = R.drawable.eldorado_logo)
+                            )
+                        }
+                    }
+                }
 
-            ListaShoppings(nomeShopping = "Shopping Cidade de São Paulo", logoShopping = painterResource(id = R.drawable.cidade_sp_log))
-            ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
-            ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
+                override fun onFailure(call: Call<List<LoginUsuario>>, t: Throwable) {
+                    println("Erro")
+                }
+            })
 
+           // ListaShoppings(nomeShopping = "Shopping Cidade de São Paulo", logoShopping = painterResource(id = R.drawable.cidade_sp_log))
+          //  ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
+          //  ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
             MenuFooter()
         }
     }
