@@ -2,6 +2,7 @@ package com.example.buyumobile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -168,6 +169,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                     post.enqueue(object : Callback<CadastroUsuario> {
                         override fun onResponse(call: Call<CadastroUsuario>, response: Response<CadastroUsuario>) {
                             if (response.isSuccessful) {
+                                Log.d("deu certo???", "Outra coisa")
                                 val mainActivity = Intent(context, Inicio::class.java)
                                 context.startActivity(mainActivity)
                             } else {

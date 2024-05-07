@@ -34,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -103,13 +104,6 @@ class Inicio : ComponentActivity() {
                 color = Color.Black
             )
 
-            Button(onClick = {
-                val intent = Intent(context, TelaProdutos::class.java)
-                context.startActivity(intent)
-            }) {
-                Text("Ver todas as lojas")
-            }
-
             val shopping = remember { mutableStateListOf<ListaShopping>() }
 
             val erroApi = remember {
@@ -119,22 +113,24 @@ class Inicio : ComponentActivity() {
             val apiShoppings = RetrofitService.getApiShoppings()
 
             val get = apiShoppings.getShoppings()
-
-            get.enqueue(object : Callback<List<ListaShopping>>{
-                override fun onResponse( call: Call<List<ListaShopping>>, response: Response<List<ListaShopping>>){
-                    if(response.isSuccessful){
-                        val lista = response.body()
-                        Log.d("deu certo???", "Outra coisa")
-                        if (lista != null){
-                          shopping.clear()
-                            shopping.addAll(lista)
+            
+            LaunchedEffect(Unit) {
+                get.enqueue(object : Callback<List<ListaShopping>>{
+                    override fun onResponse( call: Call<List<ListaShopping>>, response: Response<List<ListaShopping>>){
+                        if(response.isSuccessful){
+                            val lista = response.body()
+                            Log.d("deu certo???", "Outra coisa")
+                            if (lista != null){
+                                shopping.clear()
+                                shopping.addAll(lista)
+                            }
                         }
                     }
-                }
-                override fun onFailure(call: Call<List<ListaShopping>>, t: Throwable) {
-                    erroApi.value = t.message!!
-                }
-            })
+                    override fun onFailure(call: Call<List<ListaShopping>>, t: Throwable) {
+                        erroApi.value = t.message!!
+                    }
+                })
+            }
 
             shopping.forEach {
                 ListaShoppings(
@@ -206,7 +202,7 @@ class Inicio : ComponentActivity() {
                     val intent = Intent(context, TelaUltimosPedidos::class.java)
                     context.startActivity(intent)
                 }) {
-                    Text("Perfil")
+                    Text("Pedidos")
                 }
             }
         }
@@ -349,43 +345,6 @@ class Inicio : ComponentActivity() {
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-        }
-    }
-
-    @Composable
-    fun ListaLojas(nomeShopping: String, nomeLoja: String, logoLoja: Painter) {
-        val context = LocalContext.current
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(0.dp)
-        ) {
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                Image(
-                    painter = logoLoja,
-                    contentDescription = "Logo da Loja",
-                    modifier = Modifier
-                        .clickable(
-                            onClick = {
-                                val intent = Intent(context, TelaProdutos::class.java)
-                                context.startActivity(intent)
-                            }
-                        )
-                        .size(45.dp)
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(Color.Transparent)
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = nomeLoja,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 10.sp,
-                    textAlign = TextAlign.Center
-                )
-            }
         }
     }
 
