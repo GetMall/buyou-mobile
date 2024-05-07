@@ -143,9 +143,9 @@ class Inicio : ComponentActivity() {
                 )
             }
 
-           // ListaShoppings(nomeShopping = "Shopping Cidade de São Paulo", logoShopping = painterResource(id = R.drawable.cidade_sp_log))
-          //  ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
-          //  ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
+            ListaShoppings(nomeShopping = "Shopping Cidade de São Paulo", logoShopping = painterResource(id = R.drawable.cidade_sp_log))
+            ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
+            ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
             MenuFooter()
         }
     }
@@ -202,11 +202,6 @@ class Inicio : ComponentActivity() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = "Início",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Normal
-                )
                 Button(onClick = {
                     val intent = Intent(context, TelaUltimosPedidos::class.java)
                     context.startActivity(intent)
@@ -289,6 +284,8 @@ class Inicio : ComponentActivity() {
 
     @Composable
     fun ListaShoppings(nomeShopping: String, logoShopping: Painter) {
+        val context = LocalContext.current
+
         Spacer(modifier = Modifier.height(16.dp))
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -334,9 +331,12 @@ class Inicio : ComponentActivity() {
                                 .size(50.dp)
                                 .clip(RoundedCornerShape(10.dp))
                                 .background(Color.White)
-                                .clickable {
-
-                                },
+                                .clickable(
+                                    onClick = {
+                                        val intent = Intent(context, TelaProdutos::class.java)
+                                        context.startActivity(intent)
+                                    }
+                                )
                         )
                         Text(
                             text = "Renner",

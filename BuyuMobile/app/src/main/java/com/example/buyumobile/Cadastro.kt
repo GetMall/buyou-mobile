@@ -71,6 +71,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
     val (usuario, setUsuario) = remember {mutableStateOf("")}
     val (email, setEmail) = remember { mutableStateOf("") }
     val (password, setPassword) = remember { mutableStateOf("") }
+    val ( confirmPassword, setConfirmPassword) = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -144,8 +145,8 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = password,
-                onValueChange = setPassword,
+                value = confirmPassword,
+                onValueChange = setConfirmPassword,
                 label = { Text("Confirmar Senha", style = TextStyle(color = Color(0xFF692FA3))) },
                 modifier = Modifier
                     .fillMaxWidth()
