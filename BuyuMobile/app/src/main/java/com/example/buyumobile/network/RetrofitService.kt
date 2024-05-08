@@ -26,4 +26,14 @@ object RetrofitService {
         return cliente
     }
 
+    fun getApiProdutos(): ApiProdutos {
+        val cliente = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ApiProdutos::class.java)
+
+        return cliente
+    }
+
 }
