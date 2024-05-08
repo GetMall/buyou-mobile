@@ -140,19 +140,19 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                     val loginUsuario = LoginUsuario(email, password)
                     val post = api.loginUsuario(loginUsuario)
                     val inicio = Intent(context, Inicio::class.java)
+                    context.startActivity(inicio)
                     post.enqueue(object : Callback<LoginUsuario> {
                         override fun onResponse(call: Call<LoginUsuario>, response: Response<LoginUsuario>) {
                             if (response.isSuccessful) {
-                                context.startActivity(inicio)
-                                val sharedPreferences =
-                                    context.getSharedPreferences("storage", Context.MODE_PRIVATE)
-                                val editor = sharedPreferences.edit()
-
-//                              editor.putString("token", response.body().token)
-                                editor.putString("token", response.body()!!.email) // gravar algo no sharedPreference
-                                editor.apply()
-
-                                sharedPreferences.getString("token", "") // pegar algo do sharedPreference
+//                                val sharedPreferences =
+//                                    context.getSharedPreferences("storage", Context.MODE_PRIVATE)
+//                                val editor = sharedPreferences.edit()
+//
+////                              editor.putString("token", response.body().token)
+//                                editor.putString("token", response.body()!!.email) // gravar algo no sharedPreference
+//                                editor.apply()
+//
+//                                sharedPreferences.getString("token", "") // pegar algo do sharedPreference
 
                                 Log.d("Login realizado com sucesso", "Outra coisa")
                             } else {

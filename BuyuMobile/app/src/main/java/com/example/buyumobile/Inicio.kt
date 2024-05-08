@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -51,6 +52,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.buyumobile.model.ListaShopping
 import com.example.buyumobile.network.ApiShoppings
 import com.example.buyumobile.network.RetrofitService
@@ -134,14 +136,14 @@ class Inicio : ComponentActivity() {
 
             shopping.forEach {
                 ListaShoppings(
-                    nomeShopping = it.nome,
+                    listaShopping = it,
                     logoShopping = painterResource(id = R.drawable.eldorado_logo)
                 )
             }
 
-            ListaShoppings(nomeShopping = "Shopping Cidade de São Paulo", logoShopping = painterResource(id = R.drawable.cidade_sp_log))
-            ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
-            ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
+      //      ListaShoppings(listaShopping = , logoShopping = painterResource(id = R.drawable.cidade_sp_log))
+        //    ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
+          //  ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
             MenuFooter()
         }
     }
@@ -279,7 +281,7 @@ class Inicio : ComponentActivity() {
     }
 
     @Composable
-    fun ListaShoppings(nomeShopping: String, logoShopping: Painter) {
+    fun ListaShoppings(logoShopping: Painter, listaShopping: ListaShopping ) {
         val context = LocalContext.current
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -302,7 +304,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(0.dp))
 
                 Text(
-                    text = nomeShopping,
+                    text = listaShopping.nome,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal
                 )
@@ -314,28 +316,29 @@ class Inicio : ComponentActivity() {
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.padding(start = 20.dp)
             ){
-                items(5) {
+                items(listaShopping.lojas) {
                     Column (
                         modifier = Modifier
                             .padding(start = 0.dp)
                             .width(100.dp)
                     ){
-                        Image(
-                            painter = painterResource(id = R.drawable.logo_renner),
-                            contentDescription = "Logo da Empresa",
-                            modifier = Modifier
-                                .size(50.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(Color.White)
-                                .clickable(
-                                    onClick = {
-                                        val intent = Intent(context, TelaProdutos::class.java)
-                                        context.startActivity(intent)
-                                    }
-                                )
-                        )
+//                        Image(
+//                            painter = painterResource(id = R.drawable.logo_renner),
+//                            contentDescription = "Logo da Empresa",
+//                            modifier = Modifier
+//                                .size(50.dp)
+//                                .clip(RoundedCornerShape(10.dp))
+//                                .background(Color.White)
+//                                .clickable(
+//                                    onClick = {
+//                                        val intent = Intent(context, TelaProdutos::class.java)
+//                                        context.startActivity(intent)
+//                                    }
+//                                )
+//                        )
+//                        AsyncImage(model = it, contentDescription = )
                         Text(
-                            text = "Renner",
+                            text = it.nome,
                             fontWeight = FontWeight.Bold,
                             fontSize = 10.sp,
                             textAlign = TextAlign.Center,
