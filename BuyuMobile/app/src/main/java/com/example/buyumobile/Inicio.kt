@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -32,8 +32,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
@@ -52,8 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import com.example.buyumobile.model.ListaShopping
+import com.example.buyumobile.model.Shopping
 import com.example.buyumobile.network.ApiShoppings
 import com.example.buyumobile.network.RetrofitService
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
@@ -106,7 +103,7 @@ class Inicio : ComponentActivity() {
                 color = Color.Black
             )
 
-            val shopping = remember { mutableStateListOf<ListaShopping>() }
+            val shopping = remember { mutableStateListOf<Shopping>() }
 
             val erroApi = remember {
                 mutableStateOf("")
@@ -116,30 +113,36 @@ class Inicio : ComponentActivity() {
 
             val get = apiShoppings.getShoppings()
             
-            LaunchedEffect(Unit) {
-                get.enqueue(object : Callback<List<ListaShopping>>{
-                    override fun onResponse( call: Call<List<ListaShopping>>, response: Response<List<ListaShopping>>){
+            LaunchedEffect(key1 = true){
+                get.enqueue(object : Callback<List<Shopping>>{
+                    override fun onResponse(call: Call<List<Shopping>>, response: Response<List<Shopping>>){
                         if(response.isSuccessful){
                             val lista = response.body()
-                            Log.d("deu certo???", "Outra coisa")
+                            Log.d("ERRODEUCERTO", lista.toString())
                             if (lista != null){
                                 shopping.clear()
                                 shopping.addAll(lista)
+                                Log.d("teste" , shopping.toString())
                             }
                         }
                     }
-                    override fun onFailure(call: Call<List<ListaShopping>>, t: Throwable) {
+                    override fun onFailure(call: Call<List<Shopping>>, t: Throwable) {
                         erroApi.value = t.message!!
+                        Log.d("ERROREQUESTE", t.message.toString(), t)
                     }
                 })
             }
 
-            shopping.forEach {
-                ListaShoppings(
-                    listaShopping = it,
-                    logoShopping = painterResource(id = R.drawable.eldorado_logo)
-                )
+            LazyColumn (Modifier
+                .height(300.dp)){
+                items(items=shopping, itemContent = {
+                    ListaShoppings(
+                        logoShopping = painterResource(id = R.drawable.cidade_sp_log),
+                        shopping = it
+                    )
+                })
             }
+
 
       //      ListaShoppings(listaShopping = , logoShopping = painterResource(id = R.drawable.cidade_sp_log))
         //    ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
@@ -281,7 +284,7 @@ class Inicio : ComponentActivity() {
     }
 
     @Composable
-    fun ListaShoppings(logoShopping: Painter, listaShopping: ListaShopping ) {
+    fun ListaShoppings(logoShopping: Painter, shopping: Shopping ) {
         val context = LocalContext.current
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -304,7 +307,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(0.dp))
 
                 Text(
-                    text = listaShopping.nome,
+                    text = shopping.nome,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal
                 )
@@ -314,9 +317,11 @@ class Inicio : ComponentActivity() {
 
             LazyRow (
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(start = 20.dp)
+                modifier = Modifier
+                    .padding(start = 20.dp)
+                    .fillMaxWidth()
             ){
-                items(listaShopping.lojas) {
+                items(shopping.lojas) {
                     Column (
                         modifier = Modifier
                             .padding(start = 0.dp)

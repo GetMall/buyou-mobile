@@ -1,7 +1,9 @@
 package com.example.buyumobile.model
 
-data class ListaShopping(
-    val id: Int,
+import java.util.UUID
+
+data class Shopping(
+    val id: UUID,
     val nome: String,
     val lojas: List<Loja>
 )
