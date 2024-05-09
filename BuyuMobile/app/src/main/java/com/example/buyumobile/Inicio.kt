@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -342,6 +343,23 @@ class Inicio : ComponentActivity() {
 //                                )
 //                        )
 //                        AsyncImage(model = it, contentDescription = )
+                        Image(
+                            painter = painterResource(id = R.drawable.logo_renner),
+                            contentDescription = "Logo da Empresa",
+                            modifier = Modifier
+                                .size(50.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(Color.White)
+                                .clickable(
+                                    onClick = {
+                                        val intent = Intent(context, TelaProdutos::class.java)
+                                        intent.putExtra("idLoja", it.id.toString())
+                                        intent.putExtra("nomeLoja", it.nome)
+                                        intent.putExtra("nomeShopping", shopping.nome)
+                                        context.startActivity(intent)
+                                    }
+                                )
+                        )
                         Text(
                             text = it.nome,
                             fontWeight = FontWeight.Bold,

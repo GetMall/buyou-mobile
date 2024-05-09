@@ -34,17 +34,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
 
-class TelaProdutos : ComponentActivity() {
+class TelaProdutos(s: String) : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             BuyuMobileTheme {
                 // A surface container using the 'background' color from the theme
+
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TelaProdutos("Android")
+                    TelaProdutos("Android"
+                    )
                 }
             }
         }
@@ -52,7 +55,7 @@ class TelaProdutos : ComponentActivity() {
 }
 
 @Composable
-fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
+fun TelaProdutos(lojaId: String, nomeLoja: String, nomeShopping: String, name: String, modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,8 +68,10 @@ fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
 
         // Nome da Loja
 
+
+
         Text(
-            text = "Lojas Renner",
+            text = nomeLoja,
             fontSize = 20.sp,
             modifier = Modifier.padding(bottom = 8.dp)
             .fillMaxWidth()
@@ -79,7 +84,7 @@ fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
         // Nome do Shopping
 
         Text(
-            text = "Shopping Cidade São Paulo",
+            text = nomeShopping,
             modifier = Modifier.padding(bottom = 8.dp)
                 .fillMaxWidth()
                 .align(Alignment.Start),
