@@ -55,7 +55,7 @@ class TelaProdutos(s: String) : ComponentActivity() {
 }
 
 @Composable
-fun TelaProdutos(lojaId: String, nomeLoja: String, nomeShopping: String, name: String, modifier: Modifier = Modifier) {
+fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,7 +71,7 @@ fun TelaProdutos(lojaId: String, nomeLoja: String, nomeShopping: String, name: S
 
 
         Text(
-            text = nomeLoja,
+            text = "Barred's Shopping",
             fontSize = 20.sp,
             modifier = Modifier.padding(bottom = 8.dp)
             .fillMaxWidth()
@@ -84,7 +84,7 @@ fun TelaProdutos(lojaId: String, nomeLoja: String, nomeShopping: String, name: S
         // Nome do Shopping
 
         Text(
-            text = nomeShopping,
+            text = "Shopping Cidade São Paulo",
             modifier = Modifier.padding(bottom = 8.dp)
                 .fillMaxWidth()
                 .align(Alignment.Start),

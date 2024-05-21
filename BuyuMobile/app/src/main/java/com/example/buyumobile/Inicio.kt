@@ -51,6 +51,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.buyumobile.model.Shopping
 import com.example.buyumobile.network.ApiShoppings
 import com.example.buyumobile.network.RetrofitService
@@ -138,7 +139,6 @@ class Inicio : ComponentActivity() {
                 .height(300.dp)){
                 items(items=shopping, itemContent = {
                     ListaShoppings(
-                        logoShopping = painterResource(id = R.drawable.cidade_sp_log),
                         shopping = it
                     )
                 })
@@ -285,7 +285,7 @@ class Inicio : ComponentActivity() {
     }
 
     @Composable
-    fun ListaShoppings(logoShopping: Painter, shopping: Shopping ) {
+    fun ListaShoppings(shopping: Shopping ) {
         val context = LocalContext.current
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -299,10 +299,19 @@ class Inicio : ComponentActivity() {
 
                 Spacer(modifier = Modifier.width(18.dp))
 
-                Image(
-                    painter = logoShopping,
-                    contentDescription = "Logo do Shopping",
-                    modifier = Modifier.size(35.dp)
+                AsyncImage(
+                    model = "http://10.18.32.103:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
+                    contentDescription ="Logo da Empresa",
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Color.White)
+                        .clickable(
+                            onClick = {
+                                val intent = Intent(context, TelaProdutos::class.java)
+                                context.startActivity(intent)
+                            }
+                        )
                 )
 
                 Spacer(modifier = Modifier.width(0.dp))
@@ -342,10 +351,9 @@ class Inicio : ComponentActivity() {
 //                                    }
 //                                )
 //                        )
-//                        AsyncImage(model = it, contentDescription = )
-                        Image(
-                            painter = painterResource(id = R.drawable.logo_renner),
-                            contentDescription = "Logo da Empresa",
+                        AsyncImage(
+                            model = "http://10.18.32.103:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                            contentDescription ="Logo da Empresa",
                             modifier = Modifier
                                 .size(50.dp)
                                 .clip(RoundedCornerShape(10.dp))
@@ -353,13 +361,24 @@ class Inicio : ComponentActivity() {
                                 .clickable(
                                     onClick = {
                                         val intent = Intent(context, TelaProdutos::class.java)
-                                        intent.putExtra("idLoja", it.id.toString())
-                                        intent.putExtra("nomeLoja", it.nome)
-                                        intent.putExtra("nomeShopping", shopping.nome)
                                         context.startActivity(intent)
                                     }
                                 )
                         )
+//                        Image(
+//                            painter = painterResource(id = R.drawable.logo_renner),
+//                            contentDescription = "Logo da Empresa",
+//                            modifier = Modifier
+//                                .size(50.dp)
+//                                .clip(RoundedCornerShape(10.dp))
+//                                .background(Color.White)
+//                                .clickable(
+//                                    onClick = {
+//                                        val intent = Intent(context, TelaProdutos::class.java)
+//                                        context.startActivity(intent)
+//                                    }
+//                                )
+//                        )
                         Text(
                             text = it.nome,
                             fontWeight = FontWeight.Bold,
