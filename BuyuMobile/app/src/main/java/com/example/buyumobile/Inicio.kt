@@ -313,9 +313,7 @@ class Inicio : ComponentActivity() {
                             }
                         )
                 )
-
-                Spacer(modifier = Modifier.width(0.dp))
-
+                Spacer(modifier = Modifier.width(5.dp))
                 Text(
                     text = shopping.nome,
                     fontSize = 12.sp,
@@ -351,20 +349,23 @@ class Inicio : ComponentActivity() {
 //                                    }
 //                                )
 //                        )
-                        AsyncImage(
-                            model = "http://10.18.32.103:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
-                            contentDescription ="Logo da Empresa",
-                            modifier = Modifier
-                                .size(50.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(Color.White)
-                                .clickable(
-                                    onClick = {
-                                        val intent = Intent(context, TelaProdutos::class.java)
-                                        context.startActivity(intent)
-                                    }
-                                )
-                        )
+
+                       if (it.imagens != null && it.imagens.isNotEmpty()) {
+                            AsyncImage(
+                                model = "http://10.18.32.103:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                contentDescription = "Logo da Empresa",
+                                modifier = Modifier
+                                    .size(50.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(Color.White)
+                                    .clickable(
+                                        onClick = {
+                                            val intent = Intent(context, TelaProdutos::class.java)
+                                            context.startActivity(intent)
+                                        }
+                                    )
+                            )
+                        }
 //                        Image(
 //                            painter = painterResource(id = R.drawable.logo_renner),
 //                            contentDescription = "Logo da Empresa",
