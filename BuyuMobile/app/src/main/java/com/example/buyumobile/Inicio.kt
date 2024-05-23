@@ -8,7 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,8 +51,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.buyumobile.model.Endereco
 import com.example.buyumobile.model.Shopping
-import com.example.buyumobile.network.ApiShoppings
 import com.example.buyumobile.network.RetrofitService
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
 import retrofit2.Call
@@ -74,7 +73,6 @@ class Inicio : ComponentActivity() {
             }
         }
     }
-
 
     @Composable
     fun TelaInicio(name: String, modifier: Modifier = Modifier) {
@@ -155,41 +153,95 @@ class Inicio : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun Header() {
-        val (endereco, setEndereco) = remember {
-            mutableStateOf("")
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.fundo_roxo),
-                contentDescription = "Background Image",
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-
-            OutlinedTextField(
-                value = endereco,
-                onValueChange = setEndereco,
-                label = { Text("Digite seu CEP", style = MaterialTheme.typography.bodyMedium) },
+        val (cep, setCep) = remember { mutableStateOf("") }
+        val api = RetrofitService.getApiUsuarios()
+        val endereco = remember { mutableStateOf(null) }
+        if(endereco.value == null){
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .background(Color.Transparent, RoundedCornerShape(8.dp))
-                    .clip(RoundedCornerShape(8.dp))
-                    .align(Alignment.CenterStart)
-                    .height(60.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Yellow,
-                    unfocusedBorderColor =  Color.Yellow,
-                    focusedLabelColor =  Color.Yellow,
-                    unfocusedLabelColor =  Color.Yellow,
-                    focusedTextColor = Color.White,
-            ),
-            )
+                    .height(100.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.fundo_roxo),
+                    contentDescription = "Background Image",
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+
+                OutlinedTextField(
+                    value = cep,
+                    onValueChange = setCep,
+                    label = { Text("Digite seu CEP", style = MaterialTheme.typography.bodyMedium) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .background(Color.Transparent, RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(8.dp))
+                        .align(Alignment.CenterStart)
+                        .height(60.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Yellow,
+                        unfocusedBorderColor =  Color.Yellow,
+                        focusedLabelColor =  Color.Yellow,
+                        unfocusedLabelColor =  Color.Yellow,
+                        focusedTextColor = Color.White,
+                    ),
+                )
+                Button(onClick = {
+                    val cepUsuario = Endereco(
+                        id = null,
+                        cep = cep,
+                    )
+                    val userId = "059558e0-ed45-461a-8867-07cd6c80085d"
+                    val put = api.putEndereco(userId, cep, cepUsuario)
+                    put.enqueue(object : Callback<Endereco> {
+                        override fun onResponse(call: Call<Endereco>, response: Response<Endereco>) {
+                            if (response.isSuccessful) {
+                                val endereco = response.body()
+                                Log.d("CEP", endereco.toString())
+                            } else {
+                                Log.d("CEP", "Erro na resposta: " + response.message())
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Endereco>, t: Throwable) {
+                            Log.d("ERRO", t.message.toString(), t)
+                        }
+                    })
+                },
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(end = 16.dp)
+                        .height(60.dp)
+                ) {
+                    Text("Buscar", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        }else{
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.fundo_roxo),
+                    contentDescription = "Background Image",
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+
+                Text(
+                    text = "CEP: ${endereco.value}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .align(Alignment.CenterStart)
+                )
+            }
+
         }
     }
     @Composable
