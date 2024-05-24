@@ -41,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -74,89 +73,12 @@ class Inicio : ComponentActivity() {
         }
     }
 
-    @Composable
-    fun TelaInicio(name: String, modifier: Modifier = Modifier) {
-        val context = LocalContext.current
-        Column (modifier= Modifier.verticalScroll(rememberScrollState())) {
-            Header()
-            Text(
-                text = "Shoppings próximos a você",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(start = 36.dp, top = 60.dp, bottom = 25.dp)
-                    .fillMaxWidth(),
-                color = Color.Black
-            )
-            ShoppingsProximos(
-                nomeShoppingProximo = "Shopping", logoShoppingProximo = painterResource(
-                    id = R.drawable.eldorado_logo
-                )
-            )
-            Text(
-                text = "Shoppings populares",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(start = 36.dp, top = 60.dp, bottom = 25.dp)
-                    .fillMaxWidth(),
-                color = Color.Black
-            )
-
-            val shopping = remember { mutableStateListOf<Shopping>() }
-
-            val erroApi = remember {
-                mutableStateOf("")
-            }
-
-            val apiShoppings = RetrofitService.getApiShoppings()
-
-            val get = apiShoppings.getShoppings()
-            
-            LaunchedEffect(key1 = true){
-                get.enqueue(object : Callback<List<Shopping>>{
-                    override fun onResponse(call: Call<List<Shopping>>, response: Response<List<Shopping>>){
-                        if(response.isSuccessful){
-                            val lista = response.body()
-                            Log.d("ERRODEUCERTO", lista.toString())
-                            if (lista != null){
-                                shopping.clear()
-                                shopping.addAll(lista)
-                                Log.d("teste" , shopping.toString())
-                            }
-                        }
-                    }
-                    override fun onFailure(call: Call<List<Shopping>>, t: Throwable) {
-                        erroApi.value = t.message!!
-                        Log.d("ERROREQUESTE", t.message.toString(), t)
-                    }
-                })
-            }
-
-            LazyColumn (Modifier
-                .height(300.dp)){
-                items(items=shopping, itemContent = {
-                    ListaShoppings(
-                        shopping = it
-                    )
-                })
-            }
-
-
-      //      ListaShoppings(listaShopping = , logoShopping = painterResource(id = R.drawable.cidade_sp_log))
-        //    ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
-          //  ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
-            MenuFooter()
-        }
-    }
-
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun Header() {
         val (cep, setCep) = remember { mutableStateOf("") }
         val api = RetrofitService.getApiUsuarios()
         val endereco = remember { mutableStateOf(null) }
-        if(endereco.value == null){
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -205,7 +127,6 @@ class Inicio : ComponentActivity() {
                                 Log.d("CEP", "Erro na resposta: " + response.message())
                             }
                         }
-
                         override fun onFailure(call: Call<Endereco>, t: Throwable) {
                             Log.d("ERRO", t.message.toString(), t)
                         }
@@ -219,30 +140,6 @@ class Inicio : ComponentActivity() {
                     Text("Buscar", style = MaterialTheme.typography.bodyMedium)
                 }
             }
-        }else{
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.fundo_roxo),
-                    contentDescription = "Background Image",
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-
-                Text(
-                    text = "CEP: ${endereco.value}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .align(Alignment.CenterStart)
-                )
-            }
-
-        }
     }
     @Composable
     fun MenuFooter() {
@@ -267,7 +164,7 @@ class Inicio : ComponentActivity() {
     }
 
     @Composable
-    fun ShoppingsProximos(nomeShoppingProximo: String, logoShoppingProximo: Painter) {
+    fun ShoppingsProximos(shoppingsProximos: Shopping) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -352,7 +249,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(18.dp))
 
                 AsyncImage(
-                    model = "http://10.18.32.103:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
+                    model = "http://100.27.232.35:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
                     contentDescription ="Logo da Empresa",
                     modifier = Modifier
                         .size(50.dp)
@@ -404,7 +301,7 @@ class Inicio : ComponentActivity() {
 
                        if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://10.18.32.103:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://100.27.232.35:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)
@@ -445,6 +342,111 @@ class Inicio : ComponentActivity() {
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
+
+    @Composable
+    fun TelaInicio(name: String, modifier: Modifier = Modifier) {
+        val context = LocalContext.current
+        val shopping = remember { mutableStateListOf<Shopping>() }
+        val shoppingProximo = remember { mutableStateListOf<Shopping>() }
+
+        val erroApi = remember {
+            mutableStateOf("")
+        }
+
+        val apiShoppings = RetrofitService.getApiShoppings()
+
+        val get = apiShoppings.getShoppings()
+        val getShoppingProximos = apiShoppings.getShoppingsProximos("059558e0-ed45-461a-8867-07cd6c80085d")
+        Column (modifier= Modifier.verticalScroll(rememberScrollState())) {
+            Header()
+            Text(
+                text = "Shoppings próximos a você",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(start = 36.dp, top = 60.dp, bottom = 25.dp)
+                    .fillMaxWidth(),
+                color = Color.Black
+            )
+
+            LaunchedEffect(key1 = true) {
+                getShoppingProximos.enqueue(object : Callback<List<Shopping>> {
+                    override fun onResponse(call: Call<List<Shopping>>, response: Response<List<Shopping>>) {
+                        if (response.isSuccessful) {
+                            val lista = response.body()
+                            Log.d("ERRODEUCERTO", lista.toString())
+                            if (lista != null) {
+                                shoppingProximo.clear()
+                                shoppingProximo.addAll(lista)
+                                Log.d("teste", shoppingProximo.toString())
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<List<Shopping>>, t: Throwable) {
+                        erroApi.value = t.message!!
+                        Log.d("ERROREQUESTE", t.message.toString(), t)
+                    }
+                })
+            }
+
+            LazyColumn (Modifier.height(300.dp)){
+                items(items=shoppingProximo, itemContent = {
+                    ShoppingsProximos(
+                        shoppingsProximos = it
+                    )
+                })
+            }
+
+
+            Text(
+                text = "Shoppings populares",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(start = 36.dp, top = 60.dp, bottom = 25.dp)
+                    .fillMaxWidth(),
+                color = Color.Black
+            )
+
+            LaunchedEffect(key1 = true){
+                get.enqueue(object : Callback<List<Shopping>>{
+                    override fun onResponse(call: Call<List<Shopping>>, response: Response<List<Shopping>>){
+                        if(response.isSuccessful){
+                            val lista = response.body()
+                            Log.d("ERRODEUCERTO", lista.toString())
+                            if (lista != null){
+                                shopping.clear()
+                                shopping.addAll(lista)
+                                Log.d("teste" , shopping.toString())
+                            }
+                        }
+                    }
+                    override fun onFailure(call: Call<List<Shopping>>, t: Throwable) {
+                        erroApi.value = t.message!!
+                        Log.d("ERROREQUESTE", t.message.toString(), t)
+                    }
+                })
+            }
+
+            LazyColumn (Modifier
+                .height(300.dp)){
+                items(items=shopping, itemContent = {
+                    ListaShoppings(
+                        shopping = it
+                    )
+                })
+            }
+
+
+            //      ListaShoppings(listaShopping = , logoShopping = painterResource(id = R.drawable.cidade_sp_log))
+            //    ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
+            //  ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
+            MenuFooter()
+        }
+    }
+
+
 
     @Preview(showBackground = true)
     @Composable
