@@ -34,6 +34,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -75,7 +76,7 @@ class Inicio : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun Header() {
+    fun Header(shoppingProximo: MutableList<Shopping>, erroApi: MutableState<String>) {
         val (cep, setCep) = remember { mutableStateOf("") }
         val api = RetrofitService.getApiUsuarios()
         val endereco = remember { mutableStateOf(null) }
@@ -122,7 +123,26 @@ class Inicio : ComponentActivity() {
                         override fun onResponse(call: Call<Endereco>, response: Response<Endereco>) {
                             if (response.isSuccessful) {
                                 val endereco = response.body()
-                                Log.d("CEP", endereco.toString())
+                                val apiShoppings = RetrofitService.getApiShoppings()
+                                val getShoppingProximos = apiShoppings.getShoppingsProximos("059558e0-ed45-461a-8867-07cd6c80085d")
+
+                                getShoppingProximos.enqueue(object : Callback<List<Shopping>> {
+                                    override fun onResponse(call: Call<List<Shopping>>, response: Response<List<Shopping>>) {
+                                        if (response.isSuccessful) {
+                                            val lista = response.body()
+                                            Log.d("ERRODEUCERTO", lista.toString())
+                                            if (lista != null) {
+                                                shoppingProximo.clear()
+                                                shoppingProximo.addAll(lista)
+                                                Log.d("teste", shoppingProximo.toString())
+                                            }
+                                        }
+                                    }
+                                    override fun onFailure(call: Call<List<Shopping>>, t: Throwable) {
+                                        erroApi.value = t.message!!
+                                        Log.d("ERROREQUESTE", t.message.toString(), t)
+                                    }
+                                })
                             } else {
                                 Log.d("CEP", "Erro na resposta: " + response.message())
                             }
@@ -175,25 +195,17 @@ class Inicio : ComponentActivity() {
 
                 Spacer(modifier = Modifier.width(18.dp))
 
-                Image(
-                    painter = logoShoppingProximo,
-                    contentDescription = "Logo do Shopping",
+                AsyncImage(
+                    model = "http://192.168.119.27:8080/api/midias/imagens/${shoppingsProximos.imagens[0]?.nomeArquivoSalvo}",
+                    contentDescription ="Logo da Empresa",
                     modifier = Modifier
-                        .size(35.dp),
+                        .size(50.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Color.White)
                 )
-
-                Spacer(modifier = Modifier.width(0.dp))
-
-                Image(
-                    painter = logoShoppingProximo,
-                    contentDescription = "Shopping Logo",
-                    modifier = Modifier
-                        .size(24.dp)
-                        .padding(start = 8.dp, end = 16.dp)
-                )
-
+                Spacer(modifier = Modifier.width(5.dp))
                 Text(
-                    text = nomeShoppingProximo,
+                    text = shoppingsProximos.nome,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal
                 )
@@ -203,27 +215,31 @@ class Inicio : ComponentActivity() {
 
             LazyRow (
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(start = 20.dp)
+                modifier = Modifier
+                    .padding(start = 20.dp)
+                    .fillMaxWidth()
             ){
-                items(2) {
+                items(shoppingsProximos.lojas) {
                     Column (
                         modifier = Modifier
-                            .padding(start = 4.dp)
+                            .padding(start = 0.dp)
                             .width(100.dp)
                     ){
-                        Image(
-                            painter = painterResource(id = R.drawable.logo_renner),
-                            contentDescription = "Logo da Empresa",
-                            modifier = Modifier
-                                .size(50.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(Color.White)
-                        )
+                        if (it.imagens != null && it.imagens.isNotEmpty()) {
+                            AsyncImage(
+                                model = "http://192.168.119.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                contentDescription = "Logo da Empresa",
+                                modifier = Modifier
+                                    .size(50.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(Color.White)
+                            )
+                        }
                         Text(
-                            text = "Renner",
+                            text = it.nome,
                             fontWeight = FontWeight.Bold,
                             fontSize = 10.sp,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     }
                 }
@@ -249,7 +265,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(18.dp))
 
                 AsyncImage(
-                    model = "http://100.27.232.35:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
+                    model = "http://192.168.119.27:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
                     contentDescription ="Logo da Empresa",
                     modifier = Modifier
                         .size(50.dp)
@@ -284,24 +300,9 @@ class Inicio : ComponentActivity() {
                             .padding(start = 0.dp)
                             .width(100.dp)
                     ){
-//                        Image(
-//                            painter = painterResource(id = R.drawable.logo_renner),
-//                            contentDescription = "Logo da Empresa",
-//                            modifier = Modifier
-//                                .size(50.dp)
-//                                .clip(RoundedCornerShape(10.dp))
-//                                .background(Color.White)
-//                                .clickable(
-//                                    onClick = {
-//                                        val intent = Intent(context, TelaProdutos::class.java)
-//                                        context.startActivity(intent)
-//                                    }
-//                                )
-//                        )
-
                        if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://100.27.232.35:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://192.168.119.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)
@@ -315,20 +316,6 @@ class Inicio : ComponentActivity() {
                                     )
                             )
                         }
-//                        Image(
-//                            painter = painterResource(id = R.drawable.logo_renner),
-//                            contentDescription = "Logo da Empresa",
-//                            modifier = Modifier
-//                                .size(50.dp)
-//                                .clip(RoundedCornerShape(10.dp))
-//                                .background(Color.White)
-//                                .clickable(
-//                                    onClick = {
-//                                        val intent = Intent(context, TelaProdutos::class.java)
-//                                        context.startActivity(intent)
-//                                    }
-//                                )
-//                        )
                         Text(
                             text = it.nome,
                             fontWeight = FontWeight.Bold,
@@ -349,6 +336,7 @@ class Inicio : ComponentActivity() {
         val shopping = remember { mutableStateListOf<Shopping>() }
         val shoppingProximo = remember { mutableStateListOf<Shopping>() }
 
+
         val erroApi = remember {
             mutableStateOf("")
         }
@@ -356,9 +344,8 @@ class Inicio : ComponentActivity() {
         val apiShoppings = RetrofitService.getApiShoppings()
 
         val get = apiShoppings.getShoppings()
-        val getShoppingProximos = apiShoppings.getShoppingsProximos("059558e0-ed45-461a-8867-07cd6c80085d")
         Column (modifier= Modifier.verticalScroll(rememberScrollState())) {
-            Header()
+            Header(shoppingProximo = shoppingProximo, erroApi = erroApi)
             Text(
                 text = "Shoppings próximos a você",
                 fontSize = 15.sp,
@@ -369,27 +356,6 @@ class Inicio : ComponentActivity() {
                 color = Color.Black
             )
 
-            LaunchedEffect(key1 = true) {
-                getShoppingProximos.enqueue(object : Callback<List<Shopping>> {
-                    override fun onResponse(call: Call<List<Shopping>>, response: Response<List<Shopping>>) {
-                        if (response.isSuccessful) {
-                            val lista = response.body()
-                            Log.d("ERRODEUCERTO", lista.toString())
-                            if (lista != null) {
-                                shoppingProximo.clear()
-                                shoppingProximo.addAll(lista)
-                                Log.d("teste", shoppingProximo.toString())
-                            }
-                        }
-                    }
-
-                    override fun onFailure(call: Call<List<Shopping>>, t: Throwable) {
-                        erroApi.value = t.message!!
-                        Log.d("ERROREQUESTE", t.message.toString(), t)
-                    }
-                })
-            }
-
             LazyColumn (Modifier.height(300.dp)){
                 items(items=shoppingProximo, itemContent = {
                     ShoppingsProximos(
@@ -397,7 +363,6 @@ class Inicio : ComponentActivity() {
                     )
                 })
             }
-
 
             Text(
                 text = "Shoppings populares",
@@ -437,11 +402,6 @@ class Inicio : ComponentActivity() {
                     )
                 })
             }
-
-
-            //      ListaShoppings(listaShopping = , logoShopping = painterResource(id = R.drawable.cidade_sp_log))
-            //    ListaShoppings(nomeShopping = "Shopping Pátio Paulista", logoShopping = painterResource(id = R.drawable.patio_paulista_logo))
-            //  ListaShoppings(nomeShopping = "Shopping Eldorado", logoShopping = painterResource(id = R.drawable.eldorado_logo))
             MenuFooter()
         }
     }
