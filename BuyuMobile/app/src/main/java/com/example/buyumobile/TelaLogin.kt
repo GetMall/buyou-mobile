@@ -1,7 +1,11 @@
 package com.example.buyumobile
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -39,9 +43,10 @@ import androidx.compose.ui.unit.dp
 import com.example.buyumobile.model.LoginUsuario
 import com.example.buyumobile.network.RetrofitService
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
-import retrofit2.Callback
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,7 +105,8 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                 value = email,
                 onValueChange = setEmail,
                 label = { Text("Email", style = TextStyle(color = Color(0xFF692FA3))) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .background(Color(0xFFF3F3F3)),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { /* Handle next action */ }),
@@ -116,7 +122,8 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                 value = password,
                 onValueChange = setPassword,
                 label = { Text("Senha", style = TextStyle(color = Color(0xFF692FA3))) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .background(Color(0xFFF3F3F3)),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { }),
@@ -133,11 +140,20 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                     val loginUsuario = LoginUsuario(email, password)
                     val post = api.loginUsuario(loginUsuario)
                     val inicio = Intent(context, Inicio::class.java)
-                    context.startActivity(inicio)
                     post.enqueue(object : Callback<LoginUsuario> {
                         override fun onResponse(call: Call<LoginUsuario>, response: Response<LoginUsuario>) {
                             if (response.isSuccessful) {
-                                println("Login realizado com sucesso")
+                                context.startActivity(inicio)
+                               val sharedPreferences =
+                                   context.getSharedPreferences("storage", Context.MODE_PRIVATE)
+                               val editor = sharedPreferences.edit()
+
+                               // editor.putString("idUsuario", response.body()!!.idUsuario) // gravar algo no sharedPreference
+                               editor.apply()
+
+                                // sharedPreferences.getString("token", "") // pegar algo do sharedPreference
+
+                                Log.d("Login realizado com sucesso", "Outra coisa")
                             } else {
                                 errorApi.value = "Erro ao fazer login"
                             }
@@ -145,6 +161,7 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
 
                         override fun onFailure(call: Call<LoginUsuario>, t: Throwable) {
                             errorApi.value = "Erro ao fazer login"
+                            Log.d("Login realizado com falha", t.message.toString())
                         }
                     })
                 },

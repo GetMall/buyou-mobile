@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,17 +34,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
 
-class TelaProdutos : ComponentActivity() {
+class TelaProdutos(s: String) : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             BuyuMobileTheme {
                 // A surface container using the 'background' color from the theme
+
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TelaProdutos("Android")
+                    TelaProdutos("Android"
+                    )
                 }
             }
         }
@@ -52,7 +56,6 @@ class TelaProdutos : ComponentActivity() {
 
 @Composable
 fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
-    HeaderProdutos()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,36 +64,62 @@ fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+        Spacer(modifier = Modifier.height(80.dp))
+
+        // Nome da Loja
+
+
+
         Text(
-            text = "Título em negrito",
+            text = "Barred's Shopping",
+            fontSize = 20.sp,
             modifier = Modifier.padding(bottom = 8.dp)
+            .fillMaxWidth()
+            .align(Alignment.Start),
+            fontWeight = FontWeight.Bold
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Nome do Shopping
+
         Text(
-            text = "Outra linha de texto sem negrito",
+            text = "Shopping Cidade São Paulo",
             modifier = Modifier.padding(bottom = 8.dp)
+                .fillMaxWidth()
+                .align(Alignment.Start),
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Horário de Funcionamento
+
         Text(
-            text = "Mais uma linha de texto sem negrito",
+            text = "Aberto até às 22h00",
             modifier = Modifier.padding(bottom = 8.dp)
+                .fillMaxWidth()
+                .align(Alignment.Start),
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            MenuItem(text = "Vestuário")
-            MenuItem(text = "Calçados")
-            MenuItem(text = "Acessórios")
+
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            ComboBox()
-            SearchField()
+
         }
-        Text(
-            text = "Título Abaixo",
-            modifier = Modifier.padding(top = 16.dp)
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        ProductBlock(
+            productName = "Produto XYZ",
+            productDescription = "Descrição do Produto XYZ",
+            productPrice = "100,00",
+            imageResource = R.drawable.camisetapolo
         )
         ProductBlock(
             productName = "Produto XYZ",
@@ -131,7 +160,7 @@ fun HeaderProdutos() {
             contentScale = ContentScale.Crop
         )
 
-        Text(text = "R. Hadock Lobo",
+        Text(text = "R. Haddock Lobo",
             fontSize = 16.sp,
             color = Color.White,
             modifier = Modifier
@@ -140,27 +169,6 @@ fun HeaderProdutos() {
         )
     }
 }
-
-@Composable
-fun MenuItem(text: String) {
-    Text(
-        text = text,
-        modifier = Modifier.padding(8.dp)
-    )
-}
-
-@Composable
-fun ComboBox() {
-    // Implemente a ComboBox aqui
-    Text("ComboBox")
-}
-
-@Composable
-fun SearchField() {
-    // Implemente o campo de busca aqui
-    Text("Campo de busca")
-}
-
 @Composable
 fun ProductBlock(productName: String, productDescription: String, productPrice: String, imageResource: Int) {
     val context = LocalContext.current

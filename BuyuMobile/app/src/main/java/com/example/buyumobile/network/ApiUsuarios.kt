@@ -1,20 +1,31 @@
 package com.example.buyumobile.network
 
 import com.example.buyumobile.model.CadastroUsuario
+import com.example.buyumobile.model.Endereco
 import com.example.buyumobile.model.LoginUsuario
 import retrofit2.http.GET
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiUsuarios {
-    @GET("/clientes")
+    @GET("clientes")
     fun getUsuarios(): Call<List<CadastroUsuario>>
 
-    @POST("/clientes")
+    @POST("clientes")
     fun postUsuario(@Body cadastroUsuario:CadastroUsuario): Call<CadastroUsuario>
 
-    @POST("/clientes/login")
+    @POST("clientes/login")
     fun loginUsuario(@Body loginUsuario: LoginUsuario): Call<LoginUsuario>
+
+    @PUT("clientes/{idUser}/enderecos")
+    fun putEndereco(
+        @Path("idUser") idUser: String,
+        @Query("cep") cep: String,
+        @Body editarEndereco: Endereco
+    ): Call<Endereco>
 }
 

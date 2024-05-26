@@ -2,6 +2,7 @@ package com.example.buyumobile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -71,6 +72,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
     val (usuario, setUsuario) = remember {mutableStateOf("")}
     val (email, setEmail) = remember { mutableStateOf("") }
     val (password, setPassword) = remember { mutableStateOf("") }
+    val ( confirmPassword, setConfirmPassword) = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -144,8 +146,8 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = password,
-                onValueChange = setPassword,
+                value = confirmPassword,
+                onValueChange = setConfirmPassword,
                 label = { Text("Confirmar Senha", style = TextStyle(color = Color(0xFF692FA3))) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -167,7 +169,8 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                     post.enqueue(object : Callback<CadastroUsuario> {
                         override fun onResponse(call: Call<CadastroUsuario>, response: Response<CadastroUsuario>) {
                             if (response.isSuccessful) {
-                                val mainActivity = Intent(context, MainActivity::class.java)
+                                Log.d("deu certo???", "Outra coisa")
+                                val mainActivity = Intent(context, Inicio::class.java)
                                 context.startActivity(mainActivity)
                             } else {
                                 errorApi.value = "Erro ao criar usuário"
