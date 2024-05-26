@@ -26,6 +26,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -85,13 +86,6 @@ class Inicio : ComponentActivity() {
                     .fillMaxWidth()
                     .height(100.dp)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.fundo_roxo),
-                    contentDescription = "Background Image",
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
 
                 OutlinedTextField(
                     value = cep,
@@ -100,16 +94,13 @@ class Inicio : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
-                        .background(Color.Transparent, RoundedCornerShape(8.dp))
+                        .background(Color(0xFFF3F3F3))
                         .clip(RoundedCornerShape(8.dp))
                         .align(Alignment.CenterStart)
                         .height(60.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Yellow,
-                        unfocusedBorderColor =  Color.Yellow,
-                        focusedLabelColor =  Color.Yellow,
-                        unfocusedLabelColor =  Color.Yellow,
-                        focusedTextColor = Color.White,
+                        focusedBorderColor = Color(0xFF692FA3),
+                        unfocusedBorderColor = Color(0xFFF3F3F3)
                     ),
                 )
                 Button(onClick = {
@@ -155,9 +146,13 @@ class Inicio : ComponentActivity() {
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .padding(end = 16.dp)
-                        .height(60.dp)
-                ) {
-                    Text("Buscar", style = MaterialTheme.typography.bodyMedium)
+                        .height(50.dp),
+                        colors = ButtonDefaults.buttonColors(Color(0xFFF3F3F3))
+                )  {
+                    Image(
+                        painter = painterResource(id = R.drawable.lupa), // Substitua com seu ID de recurso de imagem
+                        contentDescription = "tESTE"
+                    )
                 }
             }
     }
@@ -196,7 +191,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(18.dp))
 
                 AsyncImage(
-                    model = "http://192.168.119.27:8080/api/midias/imagens/${shoppingsProximos.imagens[0]?.nomeArquivoSalvo}",
+                    model = "http://192.168.220.27:8080/api/midias/imagens/${shoppingsProximos.imagens[0]?.nomeArquivoSalvo}",
                     contentDescription ="Logo da Empresa",
                     modifier = Modifier
                         .size(50.dp)
@@ -227,7 +222,7 @@ class Inicio : ComponentActivity() {
                     ){
                         if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://192.168.119.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://192.168.220.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)
@@ -265,7 +260,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(18.dp))
 
                 AsyncImage(
-                    model = "http://192.168.119.27:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
+                    model = "http://192.168.220.27:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
                     contentDescription ="Logo da Empresa",
                     modifier = Modifier
                         .size(50.dp)
@@ -302,7 +297,7 @@ class Inicio : ComponentActivity() {
                     ){
                        if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://192.168.119.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://192.168.220.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)
