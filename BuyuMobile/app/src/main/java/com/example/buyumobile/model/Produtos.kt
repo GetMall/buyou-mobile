@@ -7,4 +7,5 @@ data class Produtos(
     val nome: String,
     val valorUnitario: Double,
     val descricao: String,
+    val imagens:List<Imagem>
 )
