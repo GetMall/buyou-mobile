@@ -81,6 +81,8 @@ class Inicio : ComponentActivity() {
         val (cep, setCep) = remember { mutableStateOf("") }
         val api = RetrofitService.getApiUsuarios()
         val endereco = remember { mutableStateOf(null) }
+
+        if (shoppingProximo.isEmpty()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -103,58 +105,80 @@ class Inicio : ComponentActivity() {
                         unfocusedBorderColor = Color(0xFFF3F3F3)
                     ),
                 )
-                Button(onClick = {
-                    val cepUsuario = Endereco(
-                        id = null,
-                        cep = cep,
-                    )
-                    val userId = "059558e0-ed45-461a-8867-07cd6c80085d"
-                    val put = api.putEndereco(userId, cep, cepUsuario)
-                    put.enqueue(object : Callback<Endereco> {
-                        override fun onResponse(call: Call<Endereco>, response: Response<Endereco>) {
-                            if (response.isSuccessful) {
-                                val endereco = response.body()
-                                val apiShoppings = RetrofitService.getApiShoppings()
-                                val getShoppingProximos = apiShoppings.getShoppingsProximos("059558e0-ed45-461a-8867-07cd6c80085d")
+                Button(
+                    onClick = {
+                        val cepUsuario = Endereco(
+                            id = null,
+                            cep = cep,
+                        )
+                        val userId = "059558e0-ed45-461a-8867-07cd6c80085d"
+                        val put = api.putEndereco(userId, cep, cepUsuario)
+                        put.enqueue(object : Callback<Endereco> {
+                            override fun onResponse(
+                                call: Call<Endereco>,
+                                response: Response<Endereco>
+                            ) {
+                                if (response.isSuccessful) {
+                                    val endereco = response.body()
+                                    val apiShoppings = RetrofitService.getApiShoppings()
+                                    val getShoppingProximos =
+                                        apiShoppings.getShoppingsProximos("059558e0-ed45-461a-8867-07cd6c80085d")
 
-                                getShoppingProximos.enqueue(object : Callback<List<Shopping>> {
-                                    override fun onResponse(call: Call<List<Shopping>>, response: Response<List<Shopping>>) {
-                                        if (response.isSuccessful) {
-                                            val lista = response.body()
-                                            Log.d("ERRODEUCERTO", lista.toString())
-                                            if (lista != null) {
-                                                shoppingProximo.clear()
-                                                shoppingProximo.addAll(lista)
-                                                Log.d("teste", shoppingProximo.toString())
+                                    getShoppingProximos.enqueue(object : Callback<List<Shopping>> {
+                                        override fun onResponse(
+                                            call: Call<List<Shopping>>,
+                                            response: Response<List<Shopping>>
+                                        ) {
+                                            if (response.isSuccessful) {
+                                                val lista = response.body()
+                                                Log.d("ERRODEUCERTO", lista.toString())
+                                                if (lista != null) {
+                                                    shoppingProximo.clear()
+                                                    shoppingProximo.addAll(lista)
+                                                    Log.d("teste", shoppingProximo.toString())
+                                                }
                                             }
                                         }
-                                    }
-                                    override fun onFailure(call: Call<List<Shopping>>, t: Throwable) {
-                                        erroApi.value = t.message!!
-                                        Log.d("ERROREQUESTE", t.message.toString(), t)
-                                    }
-                                })
-                            } else {
-                                Log.d("CEP", "Erro na resposta: " + response.message())
+
+                                        override fun onFailure(
+                                            call: Call<List<Shopping>>,
+                                            t: Throwable
+                                        ) {
+                                            erroApi.value = t.message!!
+                                            Log.d("ERROREQUESTE", t.message.toString(), t)
+                                        }
+                                    })
+                                } else {
+                                    Log.d("CEP", "Erro na resposta: " + response.message())
+                                }
                             }
-                        }
-                        override fun onFailure(call: Call<Endereco>, t: Throwable) {
-                            Log.d("ERRO", t.message.toString(), t)
-                        }
-                    })
-                },
+
+                            override fun onFailure(call: Call<Endereco>, t: Throwable) {
+                                Log.d("ERRO", t.message.toString(), t)
+                            }
+                        })
+                    },
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .padding(end = 16.dp)
                         .height(50.dp),
-                        colors = ButtonDefaults.buttonColors(Color(0xFFF3F3F3))
-                )  {
+                    colors = ButtonDefaults.buttonColors(Color(0xFFF3F3F3))
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.lupa), // Substitua com seu ID de recurso de imagem
                         contentDescription = "tESTE"
                     )
                 }
             }
+        }else{
+            Text(text = "Endereço",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(start = 36.dp, top = 60.dp, bottom = 25.dp),
+                color = Color.Black
+            )
+        }
     }
     @Composable
     fun MenuFooter() {
@@ -191,7 +215,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(18.dp))
 
                 AsyncImage(
-                    model = "http://192.168.220.27:8080/api/midias/imagens/${shoppingsProximos.imagens[0]?.nomeArquivoSalvo}",
+                    model = "http://54.159.22.116:8080/api/midias/imagens/${shoppingsProximos.imagens[0]?.nomeArquivoSalvo}",
                     contentDescription ="Logo da Empresa",
                     modifier = Modifier
                         .size(50.dp)
@@ -222,7 +246,7 @@ class Inicio : ComponentActivity() {
                     ){
                         if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://192.168.220.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://54.159.22.116:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)
@@ -260,7 +284,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(18.dp))
 
                 AsyncImage(
-                    model = "http://192.168.220.27:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
+                    model = "http://54.159.22.116:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
                     contentDescription ="Logo da Empresa",
                     modifier = Modifier
                         .size(50.dp)
@@ -297,7 +321,7 @@ class Inicio : ComponentActivity() {
                     ){
                        if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://192.168.220.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://54.159.22.116:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)
@@ -341,22 +365,24 @@ class Inicio : ComponentActivity() {
         val get = apiShoppings.getShoppings()
         Column (modifier= Modifier.verticalScroll(rememberScrollState())) {
             Header(shoppingProximo = shoppingProximo, erroApi = erroApi)
-            Text(
-                text = "Shoppings próximos a você",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(start = 36.dp, top = 60.dp, bottom = 25.dp)
-                    .fillMaxWidth(),
-                color = Color.Black
-            )
+            if (shoppingProximo.isNotEmpty()){
+                Text(
+                    text = "Shoppings próximos a você",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(start = 36.dp, top = 60.dp, bottom = 25.dp)
+                        .fillMaxWidth(),
+                    color = Color.Black
+                )
 
-            LazyColumn (Modifier.height(300.dp)){
-                items(items=shoppingProximo, itemContent = {
-                    ShoppingsProximos(
-                        shoppingsProximos = it
-                    )
-                })
+                LazyColumn (Modifier.height(300.dp)){
+                    items(items=shoppingProximo, itemContent = {
+                        ShoppingsProximos(
+                            shoppingsProximos = it
+                        )
+                    })
+                }
             }
 
             Text(

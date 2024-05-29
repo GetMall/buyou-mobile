@@ -19,7 +19,7 @@ interface ApiUsuarios {
     fun postUsuario(@Body cadastroUsuario:CadastroUsuario): Call<CadastroUsuario>
 
     @POST("clientes/login")
-    fun loginUsuario(@Body loginUsuario: LoginUsuario): Call<LoginUsuario>
+    fun loginUsuario(@Body loginUsuario: LoginUsuario): Call<Usuario>
 
     @PUT("clientes/{idUser}/enderecos")
     fun putEndereco(
