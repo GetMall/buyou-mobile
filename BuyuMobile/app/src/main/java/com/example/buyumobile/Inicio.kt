@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.buyumobile.model.Endereco
+import com.example.buyumobile.model.EnderecoObtido
 import com.example.buyumobile.model.Shopping
 import com.example.buyumobile.network.RetrofitService
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
@@ -81,6 +82,7 @@ class Inicio : ComponentActivity() {
         val (cep, setCep) = remember { mutableStateOf("") }
         val api = RetrofitService.getApiUsuarios()
         val endereco = remember { mutableStateOf(null) }
+        val rua = remember { mutableStateOf("")}
 
         if (shoppingProximo.isEmpty()) {
             Box(
@@ -113,16 +115,21 @@ class Inicio : ComponentActivity() {
                         )
                         val userId = "059558e0-ed45-461a-8867-07cd6c80085d"
                         val put = api.putEndereco(userId, cep, cepUsuario)
-                        put.enqueue(object : Callback<Endereco> {
+                        put.enqueue(object : Callback<EnderecoObtido> {
                             override fun onResponse(
-                                call: Call<Endereco>,
-                                response: Response<Endereco>
+                                call: Call<EnderecoObtido>,
+                                response: Response<EnderecoObtido>
                             ) {
                                 if (response.isSuccessful) {
-                                    val endereco = response.body()
+                                    val enderecoObtido = response.body()
                                     val apiShoppings = RetrofitService.getApiShoppings()
                                     val getShoppingProximos =
                                         apiShoppings.getShoppingsProximos("059558e0-ed45-461a-8867-07cd6c80085d")
+                                    if(enderecoObtido != null){
+                                        val ruaObtida = enderecoObtido.endereco?.rua ?: ""
+
+                                        rua.value = ruaObtida
+                                    }
 
                                     getShoppingProximos.enqueue(object : Callback<List<Shopping>> {
                                         override fun onResponse(
@@ -153,7 +160,7 @@ class Inicio : ComponentActivity() {
                                 }
                             }
 
-                            override fun onFailure(call: Call<Endereco>, t: Throwable) {
+                            override fun onFailure(call: Call<EnderecoObtido>, t: Throwable) {
                                 Log.d("ERRO", t.message.toString(), t)
                             }
                         })
@@ -171,7 +178,7 @@ class Inicio : ComponentActivity() {
                 }
             }
         }else{
-            Text(text = "Endereço",
+            Text(text = "${rua.value}",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
