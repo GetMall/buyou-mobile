@@ -200,6 +200,12 @@ class Inicio : ComponentActivity() {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(onClick = {
+                    val intent = Intent(context, Inicio::class.java)
+                    context.startActivity(intent)
+                }) {
+                    Text("Início")
+                }
+                Button(onClick = {
                     val intent = Intent(context, TelaUltimosPedidos::class.java)
                     context.startActivity(intent)
                 }) {
@@ -222,7 +228,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(18.dp))
 
                 AsyncImage(
-                    model = "http://54.159.22.116:8080/api/midias/imagens/${shoppingsProximos.imagens[0]?.nomeArquivoSalvo}",
+                    model = "http://192.168.53.27:8080/api/midias/imagens/${shoppingsProximos.imagens[0]?.nomeArquivoSalvo}",
                     contentDescription ="Logo da Empresa",
                     modifier = Modifier
                         .size(50.dp)
@@ -253,7 +259,7 @@ class Inicio : ComponentActivity() {
                     ){
                         if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://54.159.22.116:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://192.168.53.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)
@@ -291,7 +297,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(18.dp))
 
                 AsyncImage(
-                    model = "http://54.159.22.116:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
+                    model = "http://192.168.53.27:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
                     contentDescription ="Logo da Empresa",
                     modifier = Modifier
                         .size(50.dp)
@@ -328,7 +334,7 @@ class Inicio : ComponentActivity() {
                     ){
                        if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://54.159.22.116:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://192.168.53.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)
@@ -362,7 +368,6 @@ class Inicio : ComponentActivity() {
         val shopping = remember { mutableStateListOf<Shopping>() }
         val shoppingProximo = remember { mutableStateListOf<Shopping>() }
 
-
         val erroApi = remember {
             mutableStateOf("")
         }
@@ -370,11 +375,41 @@ class Inicio : ComponentActivity() {
         val apiShoppings = RetrofitService.getApiShoppings()
 
         val get = apiShoppings.getShoppings()
-        Column (modifier= Modifier.verticalScroll(rememberScrollState())) {
-            Header(shoppingProximo = shoppingProximo, erroApi = erroApi)
-            if (shoppingProximo.isNotEmpty()){
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 56.dp)) { // Padding to avoid overlap with footer
+
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)) {
+                    Header(shoppingProximo = shoppingProximo, erroApi = erroApi)
+                }
+
+                if (shoppingProximo.isNotEmpty()){
+                    Text(
+                        text = "Shoppings próximos a você",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(start = 36.dp, top = 60.dp, bottom = 25.dp)
+                            .fillMaxWidth(),
+                        color = Color.Black
+                    )
+
+                    LazyColumn (Modifier.height(300.dp)){
+                        items(items=shoppingProximo, itemContent = {
+                            ShoppingsProximos(
+                                shoppingsProximos = it
+                            )
+                        })
+                    }
+                }
+
                 Text(
-                    text = "Shoppings próximos a você",
+                    text = "Shoppings populares",
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -383,54 +418,41 @@ class Inicio : ComponentActivity() {
                     color = Color.Black
                 )
 
+                LaunchedEffect(key1 = true){
+                    get.enqueue(object : Callback<List<Shopping>>{
+                        override fun onResponse(call: Call<List<Shopping>>, response: Response<List<Shopping>>){
+                            if(response.isSuccessful){
+                                val lista = response.body()
+                                Log.d("ERRODEUCERTO", lista.toString())
+                                if (lista != null){
+                                    shopping.clear()
+                                    shopping.addAll(lista)
+                                    Log.d("teste" , shopping.toString())
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<List<Shopping>>, t: Throwable) {
+                            erroApi.value = t.message!!
+                            Log.d("ERROREQUESTE", t.message.toString(), t)
+                        }
+                    })
+                }
+
                 LazyColumn (Modifier.height(300.dp)){
-                    items(items=shoppingProximo, itemContent = {
-                        ShoppingsProximos(
-                            shoppingsProximos = it
+                    items(items=shopping, itemContent = {
+                        ListaShoppings(
+                            shopping = it
                         )
                     })
                 }
             }
 
-            Text(
-                text = "Shoppings populares",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(start = 36.dp, top = 60.dp, bottom = 25.dp)
-                    .fillMaxWidth(),
-                color = Color.Black
-            )
-
-            LaunchedEffect(key1 = true){
-                get.enqueue(object : Callback<List<Shopping>>{
-                    override fun onResponse(call: Call<List<Shopping>>, response: Response<List<Shopping>>){
-                        if(response.isSuccessful){
-                            val lista = response.body()
-                            Log.d("ERRODEUCERTO", lista.toString())
-                            if (lista != null){
-                                shopping.clear()
-                                shopping.addAll(lista)
-                                Log.d("teste" , shopping.toString())
-                            }
-                        }
-                    }
-                    override fun onFailure(call: Call<List<Shopping>>, t: Throwable) {
-                        erroApi.value = t.message!!
-                        Log.d("ERROREQUESTE", t.message.toString(), t)
-                    }
-                })
+            Box(modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.background)) {
+                MenuFooter()
             }
-
-            LazyColumn (Modifier
-                .height(300.dp)){
-                items(items=shopping, itemContent = {
-                    ListaShoppings(
-                        shopping = it
-                    )
-                })
-            }
-            MenuFooter()
         }
     }
 
