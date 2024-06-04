@@ -36,4 +36,14 @@ object RetrofitService {
         return cliente
     }
 
+    fun getApiPagamento(): ApiPagamento {
+        val cliente = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ApiPagamento::class.java)
+
+        return cliente
+    }
+
 }

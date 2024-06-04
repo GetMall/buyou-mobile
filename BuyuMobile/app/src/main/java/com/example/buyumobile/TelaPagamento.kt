@@ -1,7 +1,9 @@
 package com.example.buyumobile
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -41,7 +43,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.buyumobile.model.LoginUsuario
+import com.example.buyumobile.model.Pagamento
+import com.example.buyumobile.model.PagamentoResultado
+import com.example.buyumobile.model.Usuario
+import com.example.buyumobile.network.RetrofitService
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class TelaPagamento : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +76,6 @@ fun TelaPagamento(name: String, modifier: Modifier = Modifier) {
         .verticalScroll(rememberScrollState())
         .fillMaxSize(),
         verticalArrangement = Arrangement.Top) {
-        Header()
         Spacer(modifier = Modifier.height(8.dp))
         Resumo()
         Spacer(modifier = Modifier.height(8.dp))
@@ -79,26 +88,11 @@ fun TelaPagamento(name: String, modifier: Modifier = Modifier) {
         )
         FormaPagamento()
         Spacer(modifier = Modifier.height(8.dp))
-        Button(
-            onClick = {
-                // Handle login
-            },
-            modifier = Modifier
-                .width(350.dp)
-                .align(Alignment.CenterHorizontally)
-                .padding(16.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFF692FA3))
-        ) {
-            Text(text = "Finalizar o Pedido", color = Color.White)
-        }
     }
 }
 
 @Composable
 fun Header() {
-    val (endereco, setEndereco) = remember {
-        mutableStateOf("")
-    }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -155,16 +149,6 @@ fun Resumo() {
                         .padding(start = 36.dp, end = 36.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Cupom", fontSize = 12.sp)
-                    Text(text = "R$ 100,00", fontSize = 12.sp)
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Row (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 36.dp, end = 36.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
                     Text(text = "Entrega", fontSize = 12.sp)
                     Text(text = "R$ 100,00", fontSize = 12.sp)
                 }
@@ -186,6 +170,14 @@ fun Resumo() {
 
 @Composable
 fun FormaPagamento(){
+
+    val errorApi = remember { mutableStateOf("") }
+    val api = RetrofitService.getApiPagamento()
+
+    val (cpf, setCpf) = remember { mutableStateOf("") }
+    val (nomeCompleto, setNomeCompleto) = remember { mutableStateOf("") }
+
+
     Column (modifier = Modifier
         .fillMaxWidth()
         .padding(start = 36.dp, end = 36.dp)) {
@@ -218,6 +210,33 @@ fun FormaPagamento(){
                     "copiado para pagamento no seu app do seu banco de preferência. " +
                     "O código gerado tem validade de 10 minutos e a aprovação do pagamento é feita na hora. " +
                     "", fontSize = 10.sp, modifier = Modifier.padding(8.dp))
+        }
+        Button(
+            onClick = {
+                val formaPagamento = Pagamento(cpf, nomeCompleto, 100.0)
+                val post = api.postPagamento(formaPagamento)
+                post.enqueue(object : Callback<PagamentoResultado> {
+                    override fun onResponse(call: Call<PagamentoResultado>, response: Response<PagamentoResultado>) {
+                        if (response.isSuccessful) {
+                            Log.d("Pagamento realizado com sucesso", response.body().toString())
+                        } else {
+                            errorApi.value = "Erro ao fazer login"
+                        }
+                    }
+
+                    override fun onFailure(call: Call<PagamentoResultado>, t: Throwable) {
+                        errorApi.value = "Erro ao fazer login"
+                        Log.d("Login realizado com falha", t.message.toString())
+                    }
+                })
+            },
+            modifier = Modifier
+                .width(350.dp)
+                .align(Alignment.CenterHorizontally)
+                .padding(16.dp),
+            colors = ButtonDefaults.buttonColors(Color(0xFF692FA3))
+        ) {
+            Text(text = "Finalizar o Pedido", color = Color.White)
         }
     }
 }

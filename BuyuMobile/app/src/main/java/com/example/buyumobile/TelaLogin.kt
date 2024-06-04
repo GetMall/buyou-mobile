@@ -154,8 +154,6 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                                editor.putString("idUsuario", response.body()!!.idUsuario.toString()) // gravar algo no sharedPreference
                                editor.apply()
 
-                                // sharedPreferences.getString("token", "") // pegar algo do sharedPreference
-
                                 Log.d("Login realizado com sucesso", "Outra coisa")
                             } else {
                                 errorApi.value = "Erro ao fazer login"
