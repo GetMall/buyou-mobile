@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +40,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -170,7 +175,8 @@ fun Resumo() {
 
 @Composable
 fun FormaPagamento(){
-
+    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
     val errorApi = remember { mutableStateOf("") }
     val api = RetrofitService.getApiPagamento()
 
@@ -211,39 +217,52 @@ fun FormaPagamento(){
                     "O código gerado tem validade de 10 minutos e a aprovação do pagamento é feita na hora. " +
                     "", fontSize = 10.sp, modifier = Modifier.padding(8.dp))
         }
-        Button(
-            onClick = {
-                val formaPagamento = Pagamento(cpf, nomeCompleto, "100")
-                val post = api.postPagamento(formaPagamento)
-                post.enqueue(object : Callback<PagamentoResultado> {
-                    override fun onResponse(call: Call<PagamentoResultado>, response: Response<PagamentoResultado>) {
-                        if (response.isSuccessful) {
-                            Log.d("Pagamento realizado com sucesso", response.body().toString())
-                            val pagamentoResultado = response.body()
-                            if (pagamentoResultado != null) {
-                                pixCopiaECola.value = pagamentoResultado?.pixCopiaECola!!
+        Spacer(modifier = Modifier.height(16.dp))
+        if(pixCopiaECola.value.isEmpty()){
+            Button(
+                onClick = {
+                    val formaPagamento = Pagamento(cpf, nomeCompleto, "100.00")
+                    val post = api.postPagamento(formaPagamento)
+                    post.enqueue(object : Callback<PagamentoResultado> {
+                        override fun onResponse(call: Call<PagamentoResultado>, response: Response<PagamentoResultado>) {
+                            if (response.isSuccessful) {
+                                Log.d("Pagamento realizado com sucesso", response.body().toString())
+                                val pagamentoResultado = response.body()
+                                if (pagamentoResultado != null) {
+                                    pixCopiaECola.value = pagamentoResultado?.pixCopiaECola!!
+                                }
+                            } else {
+                                errorApi.value = "Erro ao fazer login"
                             }
-                        } else {
-                            errorApi.value = "Erro ao fazer login"
                         }
-                    }
 
-                    override fun onFailure(call: Call<PagamentoResultado>, t: Throwable) {
-                        errorApi.value = "Erro ao fazer login"
-                        Log.d("Login realizado com falha", t.message.toString())
-                    }
-                })
-            },
-            modifier = Modifier
-                .width(350.dp)
-                .align(Alignment.CenterHorizontally)
-                .padding(16.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFF692FA3))
-        ) {
-            Text(text = "Finalizar o Pedido", color = Color.White)
-        }
-        if (pixCopiaECola.value.isNotEmpty()) {
-            Text("${pixCopiaECola.value}", fontSize = 12.sp, modifier = Modifier.padding(8.dp))
+                        override fun onFailure(call: Call<PagamentoResultado>, t: Throwable) {
+                            errorApi.value = "Erro ao fazer login"
+                            Log.d("Login realizado com falha", t.message.toString())
+                        }
+                    })
+                },
+                modifier = Modifier
+                    .width(350.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .padding(16.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFF692FA3))
+            ) {
+                Text(text = "Finalizar o Pedido", color = Color.White)
+            }
+        }else {
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .background(Color(0xEEF0EFF0), shape = RoundedCornerShape(8.dp))
+                .clickable {
+                    clipboardManager.setText(AnnotatedString(pixCopiaECola.value))
+                    Toast.makeText(context, "PIX copiado para a área de transferência!", Toast.LENGTH_SHORT).show()
+                }
+            )
+            {
+                Text(text = "${pixCopiaECola.value}", fontSize = 10.sp, modifier = Modifier.padding(8.dp))
+            }
         }
     }
 }
