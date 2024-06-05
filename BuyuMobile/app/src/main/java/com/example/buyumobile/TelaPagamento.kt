@@ -176,7 +176,7 @@ fun FormaPagamento(){
 
     val (cpf, setCpf) = remember { mutableStateOf("") }
     val (nomeCompleto, setNomeCompleto) = remember { mutableStateOf("") }
-
+    val pixCopiaECola = remember { mutableStateOf("") }
 
     Column (modifier = Modifier
         .fillMaxWidth()
@@ -219,6 +219,10 @@ fun FormaPagamento(){
                     override fun onResponse(call: Call<PagamentoResultado>, response: Response<PagamentoResultado>) {
                         if (response.isSuccessful) {
                             Log.d("Pagamento realizado com sucesso", response.body().toString())
+                            val pagamentoResultado = response.body()
+                            if (pagamentoResultado != null) {
+                                pixCopiaECola.value = pagamentoResultado?.pixCopiaECola!!
+                            }
                         } else {
                             errorApi.value = "Erro ao fazer login"
                         }
@@ -237,6 +241,9 @@ fun FormaPagamento(){
             colors = ButtonDefaults.buttonColors(Color(0xFF692FA3))
         ) {
             Text(text = "Finalizar o Pedido", color = Color.White)
+        }
+        if (pixCopiaECola.value.isNotEmpty()) {
+            Text("${pixCopiaECola.value}", fontSize = 12.sp, modifier = Modifier.padding(8.dp))
         }
     }
 }
