@@ -151,10 +151,8 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                                    context.getSharedPreferences("storage", Context.MODE_PRIVATE)
                                val editor = sharedPreferences.edit()
 
-                               editor.putString("idUsuario", response.body()!!.idUsuario.toString()) // gravar algo no sharedPreference
+                               editor.putString("idUsuario", response.body()!!.id.toString()) // gravar algo no sharedPreference
                                editor.apply()
-
-                                // sharedPreferences.getString("token", "") // pegar algo do sharedPreference
 
                                 Log.d("Login realizado com sucesso", "Outra coisa")
                             } else {
