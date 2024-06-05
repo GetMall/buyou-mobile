@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.buyumobile.model.Loja
+import com.example.buyumobile.model.MyGlobals
 import com.example.buyumobile.model.Produtos
 import com.example.buyumobile.network.RetrofitService
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
@@ -51,6 +52,9 @@ import retrofit2.Response
 class TelaProdutos : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val extras = intent.extras
+
         setContent {
             BuyuMobileTheme {
                 // A surface container using the 'background' color from the theme
@@ -58,7 +62,7 @@ class TelaProdutos : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TelaProdutos("Android")
+                    TelaProdutos(extras)
                 }
             }
         }
@@ -66,9 +70,16 @@ class TelaProdutos : ComponentActivity() {
 }
 
 @Composable
-fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
+fun TelaProdutos(extras: Bundle?, modifier: Modifier = Modifier) {
 
-    val lojaIdMock = remember { mutableStateOf("9dbdc138-98d2-4643-8e7d-7ea2a771bcf5") }
+    var lojaIdMock = extras?.getString("idLoja")
+
+    if (lojaIdMock == null) {
+        lojaIdMock = "9dbdc138-98d2-4643-8e7d-7ea2a771bcf5"
+    }
+
+    // TODO ISSO DAQ TIRAR
+    lojaIdMock = "9dbdc138-98d2-4643-8e7d-7ea2a771bcf5"
 
     val erroApi = remember {
         mutableStateOf("")
@@ -79,7 +90,7 @@ fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
     val listaProdutos = remember { mutableStateListOf<Produtos>() }
     val listaProdutosVazio = remember { mutableStateListOf<Produtos>() }
     val loja = remember { mutableStateOf<Loja?>(null) }
-    val get = apiLojas.getLoja(lojaIdMock.value)
+    val get = apiLojas.getLoja(lojaIdMock)
 
     LaunchedEffect(key1 = true){
         get.enqueue(object : Callback<Loja> {
@@ -112,26 +123,10 @@ fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Text(
-            text = "Título em negrito",
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        Text(
-            text = "Outra linha de texto sem negrito",
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        Text(
-            text = "Mais uma linha de texto sem negrito",
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            MenuItem(text = "Vestuário")
-            MenuItem(text = "Calçados")
-            MenuItem(text = "Acessórios")
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -151,7 +146,13 @@ fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
                     productName = produto.nome,
                     productDescription = produto.descricao,
                     productPrice = produto.valorUnitario.toString(),
-                    imageResource = produto.imagens.get(0).nomeArquivoSalvo
+                    imageResource = produto.imagens[0].nomeArquivoSalvo,
+                    idProduto = produto.id.toString(),
+                    idLoja = loja.value?.id.toString(),
+                    descricaoProduto = produto.descricao,
+                    nomeProduto = produto.nome,
+                    imagemProduto = produto.imagens[0].nomeArquivoSalvo,
+                    precoProduto = produto.valorUnitario
                 )
             }
         }
@@ -207,12 +208,21 @@ fun SearchField() {
 }
 
 @Composable
-fun ProductBlock(productName: String, productDescription: String, productPrice: String, imageResource: String) {
+fun ProductBlock(productName: String, productDescription: String, productPrice: String, imageResource: String,
+                 idProduto: String, idLoja: String, precoProduto: Double, descricaoProduto: String, nomeProduto: String, imagemProduto: String) {
+    // TODO passar o id do produto
     val context = LocalContext.current
     Row(
         modifier = Modifier
             .clickable {
-                val intent = Intent(context, TelaPagamento::class.java)
+                // TODO chamar TelaDescProduto
+                val intent = Intent(context, TelaDescProduto::class.java)
+                intent.putExtra("idLoja", idLoja)
+                intent.putExtra("idProduto", idProduto)
+                intent.putExtra("precoProduto", precoProduto)
+                intent.putExtra("descricaoProduto", descricaoProduto)
+                intent.putExtra("nomeProduto", nomeProduto)
+                intent.putExtra("imagemProduto", imagemProduto)
                 context.startActivity(intent)
             }
             .fillMaxWidth()
@@ -244,7 +254,7 @@ fun ProductBlock(productName: String, productDescription: String, productPrice: 
         // Imagem do produto
         // TODO arrumar imagem
         AsyncImage(
-            model = "http://10.18.32.103:8080/api/midias/imagens/${imageResource}",
+            model = "http://${MyGlobals.ipFixo}:8080/api/midias/imagens/${imageResource}",
             contentDescription = "Logo do Produto",
             modifier = Modifier
                 .size(50.dp)
@@ -264,6 +274,6 @@ fun ProductBlock(productName: String, productDescription: String, productPrice: 
 @Composable
 fun GreetingPreview6() {
     BuyuMobileTheme {
-        TelaProdutos("Android")
+        TelaProdutos(null)
     }
 }
