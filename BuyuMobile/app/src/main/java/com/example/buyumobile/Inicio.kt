@@ -1,5 +1,6 @@
 package com.example.buyumobile
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -84,6 +85,12 @@ class Inicio : ComponentActivity() {
         val endereco = remember { mutableStateOf(null) }
         val rua = remember { mutableStateOf("")}
 
+        val context = LocalContext.current
+
+        val sharedPreferences = context.getSharedPreferences("storage", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getString("idUsuario", "ne")
+
+
         if (shoppingProximo.isEmpty()) {
             Box(
                 modifier = Modifier
@@ -113,8 +120,8 @@ class Inicio : ComponentActivity() {
                             id = null,
                             cep = cep,
                         )
-                        val userId = "059558e0-ed45-461a-8867-07cd6c80085d"
-                        val put = api.putEndereco(userId, cep, cepUsuario)
+                    //    val userId = userId
+                        val put = api.putEndereco(userId!!, cep, cepUsuario)
                         put.enqueue(object : Callback<EnderecoObtido> {
                             override fun onResponse(
                                 call: Call<EnderecoObtido>,
@@ -124,7 +131,7 @@ class Inicio : ComponentActivity() {
                                     val enderecoObtido = response.body()
                                     val apiShoppings = RetrofitService.getApiShoppings()
                                     val getShoppingProximos =
-                                        apiShoppings.getShoppingsProximos("059558e0-ed45-461a-8867-07cd6c80085d")
+                                        apiShoppings.getShoppingsProximos(userId)
                                     if(enderecoObtido != null){
                                         val ruaObtida = enderecoObtido.endereco?.rua ?: ""
 
@@ -334,7 +341,7 @@ class Inicio : ComponentActivity() {
                     ){
                        if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://192.168.53.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://3.88.3.254:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)

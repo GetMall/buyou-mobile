@@ -188,15 +188,15 @@ fun FormaPagamento(){
             Text(text = "Pix", fontSize = 16.sp)
         }
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = cpf,
+            onValueChange = setCpf,
             label = { Text("CPF") },
             modifier = Modifier
                 .fillMaxWidth()
         )
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = nomeCompleto,
+            onValueChange = setNomeCompleto,
             label = { Text("Nome Completo") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -213,7 +213,7 @@ fun FormaPagamento(){
         }
         Button(
             onClick = {
-                val formaPagamento = Pagamento(cpf, nomeCompleto, 100.0)
+                val formaPagamento = Pagamento(cpf, nomeCompleto, "100")
                 val post = api.postPagamento(formaPagamento)
                 post.enqueue(object : Callback<PagamentoResultado> {
                     override fun onResponse(call: Call<PagamentoResultado>, response: Response<PagamentoResultado>) {
