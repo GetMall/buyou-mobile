@@ -40,14 +40,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.buyumobile.model.Imagem
 import com.example.buyumobile.model.Loja
 import com.example.buyumobile.model.MyGlobals
+import com.example.buyumobile.model.ProdutoManager
 import com.example.buyumobile.model.Produtos
 import com.example.buyumobile.network.RetrofitService
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.UUID
 
 class TelaDescProduto : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,10 +83,30 @@ fun TelaDescProduto(extras: Bundle?, modifier: Modifier = Modifier) {
 
     var produtoId = extras?.getString("idProduto")
 
-    val precoProduto = extras?.getDouble("precoProduto", 0.0)
-    val descricaoProduto = extras?.getString("descricaoProduto")
-    val nomeProduto = extras?.getString("nomeProduto")
-    val imagemProduto = extras?.getString("imagemProduto")
+    var precoProduto = extras?.getDouble("precoProduto", 0.0)
+    var descricaoProduto = extras?.getString("descricaoProduto")
+    var nomeProduto = extras?.getString("nomeProduto")
+    var imagemProduto = extras?.getString("imagemProduto")
+
+    if (produtoId == null) {
+        produtoId = ""
+    }
+    if (descricaoProduto == null) {
+        descricaoProduto = ""
+    }
+
+    if (precoProduto == null) {
+        precoProduto = 0.0
+    }
+
+    if (nomeProduto == null) {
+        nomeProduto = ""
+    }
+
+    if(imagemProduto == null) {
+        imagemProduto = ""
+    }
+
 
 
     // TODO APAGAR
@@ -222,7 +245,15 @@ fun TelaDescProduto(extras: Bundle?, modifier: Modifier = Modifier) {
 
         Button(
             // TODO adicionar numa lista e ficar lançando essa lista pra todas as telas
-            onClick = { /* Ação do botão Adicionar ao Carrinho */ },
+            onClick = {
+                val listaImagens: MutableList<Imagem> = mutableListOf()
+
+                ProdutoManager.produtos.add(Produtos(UUID.fromString(produtoId), nomeProduto,
+                    precoProduto, descricaoProduto,  listaImagens))
+
+                val telaInico = Intent(contexto, Inicio::class.java)
+                contexto.startActivity(telaInico)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
