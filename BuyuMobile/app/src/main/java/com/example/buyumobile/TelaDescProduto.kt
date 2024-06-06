@@ -246,7 +246,7 @@ fun TelaDescProduto(extras: Bundle?, modifier: Modifier = Modifier) {
         Button(
             // TODO adicionar numa lista e ficar lançando essa lista pra todas as telas
             onClick = {
-                val listaImagens: MutableList<Imagem> = mutableListOf()
+                val listaImagens: List<Imagem> = listOf(Imagem(UUID.randomUUID(), imagemProduto, imagemProduto))
 
                 ProdutoManager.produtos.add(Produtos(UUID.fromString(produtoId), nomeProduto,
                     precoProduto, descricaoProduto,  listaImagens))
