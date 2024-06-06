@@ -64,5 +64,4 @@ object RetrofitService {
                 .create(ApiProdutos::class.java)
             return cliente
         }
-    }
 }

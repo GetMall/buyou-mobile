@@ -267,7 +267,7 @@ class Inicio : ComponentActivity() {
                     ){
                         if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://192.168.53.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://${MyGlobals.ipFixo}:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)
@@ -305,7 +305,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(18.dp))
 
                 AsyncImage(
-                    model = "http://192.168.53.27:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
+                    model = "http://${MyGlobals.ipFixo}:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
                     contentDescription ="Logo da Empresa",
                     modifier = Modifier
                         .size(50.dp)
@@ -342,7 +342,7 @@ class Inicio : ComponentActivity() {
                     ){
                        if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://3.88.3.254:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://${MyGlobals.ipFixo}:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)
