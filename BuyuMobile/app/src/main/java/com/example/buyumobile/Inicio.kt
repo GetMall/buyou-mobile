@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.buyumobile.model.Endereco
 import com.example.buyumobile.model.EnderecoObtido
+import com.example.buyumobile.model.MyGlobals
 import com.example.buyumobile.model.Shopping
 import com.example.buyumobile.network.RetrofitService
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
@@ -224,6 +225,7 @@ class Inicio : ComponentActivity() {
 
     @Composable
     fun ShoppingsProximos(shoppingsProximos: Shopping) {
+        val context = LocalContext.current
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -235,7 +237,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(18.dp))
 
                 AsyncImage(
-                    model = "http://192.168.53.27:8080/api/midias/imagens/${shoppingsProximos.imagens[0]?.nomeArquivoSalvo}",
+                    model = "http://${MyGlobals.ipFixo}:8080/api/midias/imagens/${shoppingsProximos.imagens[0]?.nomeArquivoSalvo}",
                     contentDescription ="Logo da Empresa",
                     modifier = Modifier
                         .size(50.dp)
@@ -266,12 +268,18 @@ class Inicio : ComponentActivity() {
                     ){
                         if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://192.168.53.27:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://${MyGlobals.ipFixo}:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)
                                     .clip(RoundedCornerShape(10.dp))
                                     .background(Color.White)
+                                    .clickable(
+                                        onClick = {
+                                            val intent = Intent(context, TelaProdutos::class.java)
+                                            context.startActivity(intent)
+                                        }
+                                    )
                             )
                         }
                         Text(
@@ -304,7 +312,7 @@ class Inicio : ComponentActivity() {
                 Spacer(modifier = Modifier.width(18.dp))
 
                 AsyncImage(
-                    model = "http://192.168.53.27:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
+                    model = "http://${MyGlobals.ipFixo}:8080/api/midias/imagens/${shopping.imagens[0]?.nomeArquivoSalvo}",
                     contentDescription ="Logo da Empresa",
                     modifier = Modifier
                         .size(50.dp)
@@ -341,7 +349,7 @@ class Inicio : ComponentActivity() {
                     ){
                        if (it.imagens != null && it.imagens.isNotEmpty()) {
                             AsyncImage(
-                                model = "http://3.88.3.254:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
+                                model = "http://${MyGlobals.ipFixo}:8080/api/midias/imagens/${it.imagens[0].nomeArquivoSalvo}",
                                 contentDescription = "Logo da Empresa",
                                 modifier = Modifier
                                     .size(50.dp)

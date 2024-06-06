@@ -3,7 +3,8 @@ package com.example.buyumobile.model
 import java.util.UUID
 
 data class Loja(
-    val id:UUID? = null,
-    val nome:String,
-    val imagens:List<Imagem>,
+    val id: UUID,
+    val nome: String,
+    val produtos: List<Produtos>,
+    val imagens:List<Imagem>
 )

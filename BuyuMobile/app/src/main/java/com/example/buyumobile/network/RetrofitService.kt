@@ -1,10 +1,12 @@
 package com.example.buyumobile.network
 
+import com.example.buyumobile.model.MyGlobals
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitService {
-    const val BASE_URL = "http://192.168.176.27:8080/api/"
+
+    val BASE_URL = "http://${MyGlobals.ipFixo}:8080/api/"
 
     fun getApiUsuarios(): ApiUsuarios {
         val cliente = Retrofit.Builder()
@@ -32,9 +34,18 @@ object RetrofitService {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiPedidos::class.java)
-
         return cliente
     }
+
+        fun getApiLojas(): ApiLojas {
+            val cliente = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(ApiLojas::class.java)
+            return cliente
+        }
+
 
     fun getApiPagamento(): ApiPagamento {
         val cliente = Retrofit.Builder()
@@ -42,8 +53,15 @@ object RetrofitService {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiPagamento::class.java)
-
         return cliente
     }
-
+        fun getApiProdutos(): ApiProdutos {
+            val cliente = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(ApiProdutos::class.java)
+            return cliente
+        }
 }
+
