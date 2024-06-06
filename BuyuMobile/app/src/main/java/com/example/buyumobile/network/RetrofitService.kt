@@ -55,7 +55,6 @@ object RetrofitService {
             .create(ApiPagamento::class.java)
         return cliente
     }
-
         fun getApiProdutos(): ApiProdutos {
             val cliente = Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -64,5 +63,4 @@ object RetrofitService {
                 .create(ApiProdutos::class.java)
             return cliente
         }
-    }
 }
