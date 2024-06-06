@@ -49,6 +49,7 @@ import com.example.buyumobile.ui.theme.BuyuMobileTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import androidx.compose.ui.res.stringResource
 
 
 class MainActivity : ComponentActivity() {
@@ -107,7 +108,7 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
             OutlinedTextField(
                 value = email,
                 onValueChange = setEmail,
-                label = { Text("Email", style = TextStyle(color = Color(0xFF692FA3))) },
+                label = { Text(stringResource(R.string.txt_email), style = TextStyle(color = Color(0xFF692FA3))) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color(0xFFF3F3F3)),
@@ -124,7 +125,7 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
             OutlinedTextField(
                 value = password,
                 onValueChange = setPassword,
-                label = { Text("Senha", style = TextStyle(color = Color(0xFF692FA3))) },
+                label = { Text(stringResource(R.string.txt_senha), style = TextStyle(color = Color(0xFF692FA3))) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color(0xFFF3F3F3)),
@@ -169,14 +170,14 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(Color(0xFF692FA3))
             ) {
-                Text(text = "Entrar em minha conta", color = Color.White)
+                Text(stringResource(R.string.txt_entrar), color = Color.White)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Divider(modifier = Modifier.weight(1f), color = Color.Gray)
-                Text(text = "ou", modifier = Modifier.padding(horizontal = 8.dp))
+                Text(stringResource(R.string.txt_ou), modifier = Modifier.padding(horizontal = 8.dp))
                 Divider(modifier = Modifier.weight(1f), color = Color.Gray)
             }
 
@@ -190,7 +191,7 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(Color.White)
             ) {
-                Text(text = "Criar uma conta", color = Color(0xFF692FA3))
+                Text(stringResource(R.string.txt_criacao), color = Color(0xFF692FA3))
             }
         }
     }

@@ -61,7 +61,7 @@ import com.example.buyumobile.ui.theme.BuyuMobileTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
+import androidx.compose.ui.res.stringResource
 class Inicio : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,7 +101,7 @@ class Inicio : ComponentActivity() {
                 OutlinedTextField(
                     value = cep,
                     onValueChange = setCep,
-                    label = { Text("Digite seu CEP", style = MaterialTheme.typography.bodyMedium) },
+                    label = { Text(stringResource(R.string.txt_digiteCep), style = MaterialTheme.typography.bodyMedium) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -210,13 +210,13 @@ class Inicio : ComponentActivity() {
                     val intent = Intent(context, Inicio::class.java)
                     context.startActivity(intent)
                 }) {
-                    Text("Início")
+                    Text(stringResource(R.string.txt_inicio)
                 }
                 Button(onClick = {
                     val intent = Intent(context, TelaUltimosPedidos::class.java)
                     context.startActivity(intent)
                 }) {
-                    Text("Pedidos")
+                    Text(stringResource(R.string.txt_pedidos)
                 }
             }
         }
@@ -397,7 +397,7 @@ class Inicio : ComponentActivity() {
 
                 if (shoppingProximo.isNotEmpty()){
                     Text(
-                        text = "Shoppings próximos a você",
+                        stringResource(R.string.txt_shoppingsProximos),
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
@@ -416,7 +416,7 @@ class Inicio : ComponentActivity() {
                 }
 
                 Text(
-                    text = "Shoppings populares",
+                    stringResource(R.string.txt_shoppingsPopulares),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier

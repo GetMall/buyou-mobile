@@ -43,6 +43,7 @@ import com.example.buyumobile.ui.theme.BuyuMobileTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import androidx.compose.ui.res.stringResource
 
 class TelaUltimosPedidos : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +105,7 @@ fun TelaUltimosPedidos(name: String, modifier: Modifier = Modifier) {
 
         if(pedidos.isNotEmpty()){
             Text(
-                text = "Últimos pedidos",
+                stringResource(R.string.txt_ultimos),
                 color = Color(0xFF692FA3),
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -121,7 +122,7 @@ fun TelaUltimosPedidos(name: String, modifier: Modifier = Modifier) {
             }
         }else{
             Text(
-                text = "Nenhum pedido encontrado",
+                stringResource(R.string.txt_nenhum),
                 color = Color(0xFF692FA3),
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -144,7 +145,7 @@ fun TelaUltimosPedidos(name: String, modifier: Modifier = Modifier) {
                 .height(50.dp)
                 .background(color = Color(0xFF692FA3), shape = RoundedCornerShape(15.dp))
         ) {
-            Text(text = "Voltar", color = Color.White)
+            Text(stringResource(R.string.txt_voltar), color = Color.White)
         }
     }
 }

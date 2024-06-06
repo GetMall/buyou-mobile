@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
+import androidx.compose.ui.res.stringResource
 
 class TelaDescProduto : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +82,7 @@ fun TelaDescProduto(name: String, modifier: Modifier = Modifier) {
         // Spacer(modifier = Modifier.height(5.dp))
 
         Text(
-            text = "",
+            stringResource(R.string.txt_space),
             fontSize = 20.sp,
             color = Purple,
             modifier = Modifier.padding(horizontal = 16.dp)
@@ -97,13 +98,13 @@ fun TelaDescProduto(name: String, modifier: Modifier = Modifier) {
 
         // Preço do produto
         Text(
-            text = "",
+            stringResource(R.string.txt_space),
             fontSize = 20.sp,
             color = Purple,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
         Text(
-            text = "price",
+            stringResource(R.string.txt_price),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 16.dp)
@@ -113,13 +114,13 @@ fun TelaDescProduto(name: String, modifier: Modifier = Modifier) {
 
         // Descrição do produto
         Text(
-            text = "",
+            stringResource(R.string.txt_space),
             fontSize = 20.sp,
             color = Purple,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
         Text(
-            text = "description",
+            stringResource(R.string.txt_description),
             fontSize = 16.sp,
             modifier = Modifier.padding(horizontal = 30.dp)
         )
@@ -141,7 +142,7 @@ fun TelaDescProduto(name: String, modifier: Modifier = Modifier) {
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(Purple)
             ) {
-                Text(text = "Favoritar", color = Color.White)
+                stringResource(R.string.txt_favoritar), color = Color.White)
             }
         }
 
@@ -154,7 +155,7 @@ fun TelaDescProduto(name: String, modifier: Modifier = Modifier) {
             colors = ButtonDefaults.buttonColors(Purple),
 
             ) {
-            Text(text = "Comprar", color = Color.White)
+            stringResource(R.string.txt_comprar), color = Color.White)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -179,7 +180,7 @@ fun HeaderDescProduto() {
             contentScale = ContentScale.Crop
         )
 
-        Text(text = "R. Haddock Lobo, 595",
+        Text(stringResource(R.string.txt_haddock),
             fontSize = 16.sp,
             color = Color.White,
             modifier = Modifier

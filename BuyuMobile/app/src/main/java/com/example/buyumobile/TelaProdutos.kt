@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.buyumobile.ui.theme.BuyuMobileTheme
+import androidx.compose.ui.res.stringResource
 
 class TelaProdutos(s: String) : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +72,7 @@ fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
 
 
         Text(
-            text = "Barred's Shopping",
+            stringResource(R.string.txt_barred),
             fontSize = 20.sp,
             modifier = Modifier.padding(bottom = 8.dp)
             .fillMaxWidth()
@@ -84,7 +85,7 @@ fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
         // Nome do Shopping
 
         Text(
-            text = "Shopping Cidade São Paulo",
+            stringResource(R.string.txt_shoppingCidade),
             modifier = Modifier.padding(bottom = 8.dp)
                 .fillMaxWidth()
                 .align(Alignment.Start),
@@ -95,7 +96,7 @@ fun TelaProdutos(name: String, modifier: Modifier = Modifier) {
         // Horário de Funcionamento
 
         Text(
-            text = "Aberto até às 22h00",
+            stringResource(R.string.txt_funcionamento),
             modifier = Modifier.padding(bottom = 8.dp)
                 .fillMaxWidth()
                 .align(Alignment.Start),
@@ -160,7 +161,7 @@ fun HeaderProdutos() {
             contentScale = ContentScale.Crop
         )
 
-        Text(text = "R. Haddock Lobo",
+        Text(stringResource(R.string.txt_rua),
             fontSize = 16.sp,
             color = Color.White,
             modifier = Modifier

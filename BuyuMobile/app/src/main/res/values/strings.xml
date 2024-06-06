@@ -6,4 +6,44 @@
     <string name="title_activity_tela_produtos">TelaProdutos</string>
     <string name="title_activity_tela_desc_produto">TelaDescProduto</string>
     <string name="title_activity_tela_ultimos_pedidos">TelaUltimosPedidos</string>
+
+    <string name="txt_digiteCep">Digite seu CEP</string>
+    <string name="txt_inicio">Início</string>
+    <string name="txt_pedidos">Pedidos</string>
+    <string name="txt_shoppingsProximos">Shoppings próximos a você</string>
+    <string name="txt_shoppingsPopulares">Shoppings populares</string>
+    <string name="txt_usuario">Usuário</string>
+    <string name="txt_email">Email</string>
+    <string name="txt_senha">Senha</string>
+    <string name="txt_confirmacao">Confirmar senha</string>
+    <string name="txt_criacao">Criar uma conta</string>
+    <string name="txt_ou">ou</string>
+    <string name="txt_entrar">Entrar em minha conta</string>
+    <string name="txt_space"> </string>
+    <string name="txt_price">price</string>
+    <string name="txt_description">description</string>
+    <string name="txt_favoritar">Favoritar</string>
+    <string name="txt_comprar">Comprar</string>
+    <string name="txt_haddock">R. Haddock Lobo, 595</string>
+    <string name="txt_rua">R. Haddock Lobo</string>
+    <string name="txt_pagamento">Forma de Pagamento</string>
+    <string name="txt_pedido">Resumo do Pedido</string>
+    <string name="txt_subtotal">Subtotal</string>
+    <string name="txt_cem">R$ 100,00</string>
+    <string name="txt_entrega">Entrega</string>
+    <string name="txt_total">Total</string>
+    <string name="txt_pix">Pix</string>
+    <string name="txt_cpf">CPF</string>
+    <string name="txt_nome">Nome Completo</string>
+    <string name="txt_mensagemPix">O código do Pix será exibido após a confirmação de compra e poderá ser
+                    copiado para pagamento no seu app do seu banco de preferência.
+                    O código gerado tem validade de 10 minutos e a aprovação do pagamento é feita na hora. </string>
+    <string name="txt_finalizar">Finalizar o Pedido</string>
+    <string name="txt_barred">Barred's Shopping </string>
+    <string name="txt_shoppingCidade">Shopping Cidade São Paulo</string>
+    <string name="txt_funcionamento">Aberto até 22h00</string>
+    <string name="txt_ultimos">Últimos pedidos</string>
+    <string name="txt_nenhum">Nenhum pedido encontrado</string>
+    <string name="txt_voltar">Voltar</string>
+
 </resources>

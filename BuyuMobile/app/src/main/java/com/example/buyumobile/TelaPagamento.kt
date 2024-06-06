@@ -52,6 +52,7 @@ import com.example.buyumobile.ui.theme.BuyuMobileTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import androidx.compose.ui.res.stringResource
 
 class TelaPagamento : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +80,7 @@ fun TelaPagamento(name: String, modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(8.dp))
         Resumo()
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Forma de Pagamento",
+        Text(stringResource(R.string.txt_pagamento),
             fontSize = 18.sp,
             modifier = Modifier
                 .padding(start = 36.dp, top = 30.dp, bottom = 25.dp)
@@ -106,7 +107,7 @@ fun Header() {
             contentScale = ContentScale.Crop
         )
 
-        Text(text = "R. Hadock Lobo",
+        Text(stringResource(R.string.txt_rua),
             fontSize = 16.sp,
             color = Color.White,
             modifier = Modifier
@@ -121,7 +122,7 @@ fun Resumo() {
 
     Column {
         Text(
-            text = "Resumo do Pedido",
+            stringResource(R.string.txt_pedido),
             fontSize = 18.sp,
             modifier = Modifier
                 .padding(start = 36.dp, top = 30.dp, bottom = 25.dp)
@@ -139,8 +140,8 @@ fun Resumo() {
                         .padding(start = 36.dp, end = 36.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Subtotal", fontSize = 12.sp)
-                    Text(text = "R$ 100,00",  fontSize = 12.sp)
+                    Text(stringResource(R.string.txt_subtotal), fontSize = 12.sp)
+                    Text(stringResource(R.string.txt_cem),  fontSize = 12.sp)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row (
@@ -149,8 +150,8 @@ fun Resumo() {
                         .padding(start = 36.dp, end = 36.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Entrega", fontSize = 12.sp)
-                    Text(text = "R$ 100,00", fontSize = 12.sp)
+                    Text(stringResource(R.string.txt_entrega), fontSize = 12.sp)
+                    Text(stringResource(R.string.txt_cem), fontSize = 12.sp)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row (
@@ -159,8 +160,8 @@ fun Resumo() {
                         .padding(start = 36.dp, end = 36.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Total", fontSize = 12.sp)
-                    Text(text = "R$ 100,00", fontSize = 12.sp)
+                    Text(stringResource(R.string.txt_total), fontSize = 12.sp)
+                    Text(stringResource(R.string.txt_cem), fontSize = 12.sp)
                 }
             }
         }
@@ -185,19 +186,19 @@ fun FormaPagamento(){
             RadioButton(selected = true, onClick = { /*TODO*/ }, modifier = Modifier
                 .height(24.dp)
                 .width(32.dp))
-            Text(text = "Pix", fontSize = 16.sp)
+            Text(stringResource(R.string.txt_pix), fontSize = 16.sp)
         }
         OutlinedTextField(
             value = cpf,
             onValueChange = setCpf,
-            label = { Text("CPF") },
+            label = { Text(stringResource(R.string.txt_cpf) },
             modifier = Modifier
                 .fillMaxWidth()
         )
         OutlinedTextField(
             value = nomeCompleto,
             onValueChange = setNomeCompleto,
-            label = { Text("Nome Completo") },
+            label = { Text(stringResource(R.string.txt_nome) },
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -206,10 +207,7 @@ fun FormaPagamento(){
             .fillMaxWidth()
             .height(120.dp)
             .background(Color(0xEEF0EFF0), shape = RoundedCornerShape(8.dp))) {
-            Text(text = "O código do Pix será exibido após a confirmação de compra e poderá ser " +
-                    "copiado para pagamento no seu app do seu banco de preferência. " +
-                    "O código gerado tem validade de 10 minutos e a aprovação do pagamento é feita na hora. " +
-                    "", fontSize = 10.sp, modifier = Modifier.padding(8.dp))
+            Text(stringResource(R.string.txt_mensagemPix), fontSize = 10.sp, modifier = Modifier.padding(8.dp))
         }
         Button(
             onClick = {
@@ -240,7 +238,7 @@ fun FormaPagamento(){
                 .padding(16.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFF692FA3))
         ) {
-            Text(text = "Finalizar o Pedido", color = Color.White)
+            Text(stringResource(R.string.txt_finalizar), color = Color.White)
         }
         if (pixCopiaECola.value.isNotEmpty()) {
             Text("${pixCopiaECola.value}", fontSize = 12.sp, modifier = Modifier.padding(8.dp))
