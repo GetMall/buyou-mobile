@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -51,6 +52,9 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.material)
+    implementation(libs.androidx.recyclerview)
     val nav_version = "2.7.7"
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("androidx.navigation:navigation-compose:$nav_version")
