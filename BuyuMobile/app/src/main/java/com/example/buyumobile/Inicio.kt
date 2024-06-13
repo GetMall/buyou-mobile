@@ -225,6 +225,7 @@ class Inicio : ComponentActivity() {
 
     @Composable
     fun ShoppingsProximos(shoppingsProximos: Shopping) {
+        val context = LocalContext.current
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -273,6 +274,12 @@ class Inicio : ComponentActivity() {
                                     .size(50.dp)
                                     .clip(RoundedCornerShape(10.dp))
                                     .background(Color.White)
+                                    .clickable(
+                                        onClick = {
+                                            val intent = Intent(context, TelaProdutos::class.java)
+                                            context.startActivity(intent)
+                                        }
+                                    )
                             )
                         }
                         Text(

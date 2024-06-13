@@ -115,7 +115,6 @@ fun TelaProdutos(extras: Bundle?, modifier: Modifier = Modifier) {
         })
     }
 
-    HeaderProdutos()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -123,21 +122,9 @@ fun TelaProdutos(extras: Bundle?, modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            ComboBox()
-            SearchField()
-        }
         Text(
-            text = "Título Abaixo",
-            modifier = Modifier.padding(top = 16.dp)
+            text = "${loja.value?.nome}",
+            modifier = Modifier.padding(top = 16.dp).size(60.dp),
         )
 
         LazyColumn {
@@ -159,33 +146,6 @@ fun TelaProdutos(extras: Bundle?, modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun HeaderProdutos() {
-    val (endereco, setEndereco) = remember {
-        mutableStateOf("")
-    }
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.fundo_roxo),
-            contentDescription = "Background Image",
-            modifier = Modifier
-                .fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-
-        Text(text = "R. Hadock Lobo",
-            fontSize = 16.sp,
-            color = Color.White,
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(start = 0.dp)
-        )
-    }
-}
 
 @Composable
 fun MenuItem(text: String) {
@@ -195,17 +155,6 @@ fun MenuItem(text: String) {
     )
 }
 
-@Composable
-fun ComboBox() {
-    // Implemente a ComboBox aqui
-    Text("ComboBox")
-}
-
-@Composable
-fun SearchField() {
-    // Implemente o campo de busca aqui
-    Text("Campo de busca")
-}
 
 @Composable
 fun ProductBlock(productName: String, productDescription: String, productPrice: String, imageResource: String,
