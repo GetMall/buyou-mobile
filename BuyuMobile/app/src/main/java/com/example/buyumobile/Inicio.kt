@@ -208,10 +208,10 @@ class Inicio : ComponentActivity() {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(onClick = {
-                    val intent = Intent(context, Inicio::class.java)
+                    val intent = Intent(context, TelaPagamento::class.java)
                     context.startActivity(intent)
                 }) {
-                    Text("Início")
+                    Text("Carrinho")
                 }
                 Button(onClick = {
                     val intent = Intent(context, TelaUltimosPedidos::class.java)

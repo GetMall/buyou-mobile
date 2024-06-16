@@ -155,7 +155,6 @@ fun TelaDescProduto(extras: Bundle?, modifier: Modifier = Modifier) {
     ) {
 
         // Menu horizontal
-        HeaderDescProduto()
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -251,8 +250,8 @@ fun TelaDescProduto(extras: Bundle?, modifier: Modifier = Modifier) {
                 ProdutoManager.produtos.add(Produtos(UUID.fromString(produtoId), nomeProduto,
                     precoProduto, descricaoProduto,  listaImagens))
 
-                val telaInico = Intent(contexto, Inicio::class.java)
-                contexto.startActivity(telaInico)
+                val telaProdutos = Intent(contexto, TelaProdutos::class.java)
+                contexto.startActivity(telaProdutos)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -261,7 +260,7 @@ fun TelaDescProduto(extras: Bundle?, modifier: Modifier = Modifier) {
             colors = ButtonDefaults.buttonColors(Purple),
 
             ) {
-            Text(text = "Comprar", color = Color.White)
+            Text(text = "Adicionar", color = Color.White)
         }
 
         Spacer(modifier = Modifier.height(16.dp))

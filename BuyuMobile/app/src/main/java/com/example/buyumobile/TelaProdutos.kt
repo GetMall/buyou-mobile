@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +22,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -96,55 +101,76 @@ fun TelaProdutos(extras: Bundle?, modifier: Modifier = Modifier) {
         get.enqueue(object : Callback<Loja> {
             override fun onResponse(call: Call<Loja>, response: Response<Loja>){
                 if(response.isSuccessful){
-                    // TODO
                     loja.value = response.body()
-                    Log.d("ERRODEUCERTO", loja.toString())
                     if (loja != null){
-                        // TODO tirar isso dai depois
                         listaProdutos.clear()
                         listaProdutos.addAll(loja.value?.produtos ?: listaProdutosVazio)
-
-                        Log.d("teste" , loja.toString())
                     }
                 }
             }
             override fun onFailure(call: Call<Loja>, t: Throwable) {
                 erroApi.value = t.message!!
-                Log.d("ERROREQUESTE", t.message.toString(), t)
             }
         })
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "${loja.value?.nome}",
-            modifier = Modifier.padding(top = 16.dp).size(60.dp),
-        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 56.dp), // espaço para o footer
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "${loja.value?.nome}",
+                modifier = Modifier
+                    .padding(16.dp)
+                    .background(Color.Gray)
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                fontSize = 24.sp,
+                color = Color.White
+            )
 
-        LazyColumn {
-            items(listaProdutos) { produto ->
-                ProductBlock(
-                    productName = produto.nome,
-                    productDescription = produto.descricao,
-                    productPrice = produto.valorUnitario.toString(),
-                    imageResource = produto.imagens[0].nomeArquivoSalvo,
-                    idProduto = produto.id.toString(),
-                    idLoja = loja.value?.id.toString(),
-                    descricaoProduto = produto.descricao,
-                    nomeProduto = produto.nome,
-                    imagemProduto = produto.imagens[0].nomeArquivoSalvo,
-                    precoProduto = produto.valorUnitario
-                )
+            Card(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 16.dp),
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+            ) {
+                LazyColumn(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    items(listaProdutos) { produto ->
+                        ProductBlock(
+                            productName = produto.nome,
+                            productDescription = produto.descricao,
+                            productPrice = produto.valorUnitario.toString(),
+                            imageResource = produto.imagens[0].nomeArquivoSalvo,
+                            idProduto = produto.id.toString(),
+                            idLoja = loja.value?.id.toString(),
+                            descricaoProduto = produto.descricao,
+                            nomeProduto = produto.nome,
+                            imagemProduto = produto.imagens[0].nomeArquivoSalvo,
+                            precoProduto = produto.valorUnitario
+                        )
+                    }
+                }
             }
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+        ) {
+            MenuFooter()
         }
     }
 }
+
+
 
 
 @Composable
@@ -175,7 +201,10 @@ fun ProductBlock(productName: String, productDescription: String, productPrice: 
                 context.startActivity(intent)
             }
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .background(Color.White)
+            .padding(top = 1.dp, bottom = 1.dp)
+            .padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         // Bloco de informações do produto
@@ -216,6 +245,34 @@ fun ProductBlock(productName: String, productDescription: String, productPrice: 
                     }
                 )
         )
+    }
+}
+
+@Composable
+fun MenuFooter() {
+    val context = LocalContext.current
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(onClick = {
+                val intent = Intent(context, TelaPagamento::class.java)
+                context.startActivity(intent)
+            }) {
+                Text("Carrinho")
+            }
+            Button(onClick = {
+                val intent = Intent(context, TelaUltimosPedidos::class.java)
+                context.startActivity(intent)
+            }) {
+                Text("Pedidos")
+            }
+        }
     }
 }
 
