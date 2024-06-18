@@ -173,11 +173,11 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                                 val mainActivity = Intent(context, Inicio::class.java)
                                 context.startActivity(mainActivity)
                             } else {
-                                errorApi.value = "Erro ao criar usuário"
+                                errorApi.value = "Erro ao realizar o cadastro, entre em contato com nossos suportes"
                             }
                         }
                         override fun onFailure(call: Call<CadastroUsuario>, t: Throwable) {
-                            errorApi.value = "Erro ao criar usuário"
+                            errorApi.value = "Erro ao realizar o cadastro, entre em contato com nossos suportes"
                         }
                     })
                 },
@@ -186,6 +186,8 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
             ) {
                 Text(text = "Criar uma conta", color = Color.White)
             }
+
+            Text(text = errorApi.value, color = Color.Red)
 
             Spacer(modifier = Modifier.height(16.dp))
 

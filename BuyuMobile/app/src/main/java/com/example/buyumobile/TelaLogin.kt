@@ -156,12 +156,12 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
 
                                 Log.d("Login realizado com sucesso", "Outra coisa")
                             } else {
-                                errorApi.value = "Erro ao fazer login"
+                                errorApi.value = "Usuario ou senha inválidos"
                             }
                         }
 
                         override fun onFailure(call: Call<Usuario>, t: Throwable) {
-                            errorApi.value = "Erro ao fazer login"
+                            errorApi.value = "Usuário ou senha inválidos"
                             Log.d("Login realizado com falha", t.message.toString())
                         }
                     })
@@ -171,6 +171,8 @@ fun LoginScreen(name: String, modifier: Modifier = Modifier) {
             ) {
                 Text(text = "Entrar em minha conta", color = Color.White)
             }
+            
+            Text(text = errorApi.value, color = Color.Red)
 
             Spacer(modifier = Modifier.height(16.dp))
 

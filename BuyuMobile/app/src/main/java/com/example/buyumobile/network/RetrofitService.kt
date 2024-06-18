@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitService {
 
-    val BASE_URL = "https://${MyGlobals.ipFixo}/api/"
+    val BASE_URL = "http://${MyGlobals.ipFixo}:8080/api/"
 
     fun getApiUsuarios(): ApiUsuarios {
         val cliente = Retrofit.Builder()
