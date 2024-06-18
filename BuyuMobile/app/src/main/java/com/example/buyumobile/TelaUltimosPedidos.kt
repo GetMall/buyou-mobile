@@ -1,5 +1,6 @@
 package com.example.buyumobile
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -65,10 +66,11 @@ class TelaUltimosPedidos : ComponentActivity() {
 fun TelaUltimosPedidos(name: String, modifier: Modifier = Modifier) {
     val pedidos = remember { mutableStateListOf<Pedidos>() }
     val api = RetrofitService.getApiPedidos()
-    val userId = "059558e0-ed45-461a-8867-07cd6c80085d"
-    val get = api.getPedidos(userId)
     val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("storage", Context.MODE_PRIVATE)
+    val userId = sharedPreferences.getString("idUsuario", "ne")
 
+    val get = api.getPedidos(userId!!)
     val erroApi = remember {
         mutableStateOf("")
     }
