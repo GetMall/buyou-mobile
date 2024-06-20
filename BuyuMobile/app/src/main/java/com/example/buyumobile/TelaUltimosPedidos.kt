@@ -1,5 +1,6 @@
 package com.example.buyumobile
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -65,10 +66,11 @@ class TelaUltimosPedidos : ComponentActivity() {
 fun TelaUltimosPedidos(name: String, modifier: Modifier = Modifier) {
     val pedidos = remember { mutableStateListOf<Pedidos>() }
     val api = RetrofitService.getApiPedidos()
-    val userId = "059558e0-ed45-461a-8867-07cd6c80085d"
-    val get = api.getPedidos(userId)
     val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("storage", Context.MODE_PRIVATE)
+    val userId = sharedPreferences.getString("idUsuario", "ne")
 
+    val get = api.getPedidos(userId!!)
     val erroApi = remember {
         mutableStateOf("")
     }
@@ -107,7 +109,7 @@ fun TelaUltimosPedidos(name: String, modifier: Modifier = Modifier) {
                 text = "Últimos pedidos",
                 color = Color(0xFF692FA3),
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -152,7 +154,7 @@ fun TelaUltimosPedidos(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun CardPedido(pedidos: Pedidos) {
     Surface(
-        modifier = Modifier.fillMaxWidth(0.9f),
+        modifier = Modifier.fillMaxWidth(0,9f),
         color = Color.White,
         shadowElevation = 4.dp,
         shape = RoundedCornerShape(8.dp)
@@ -164,7 +166,7 @@ fun CardPedido(pedidos: Pedidos) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = pedidos.status,
+                text = pedidos.status ?: "N/A",
                 fontSize = 11.sp,
                 modifier = Modifier.weight(1f)
             )
@@ -172,7 +174,7 @@ fun CardPedido(pedidos: Pedidos) {
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(
-                text = pedidos.valorTotal.toString(),
+                text = pedidos.valorTotal?.toString() ?: "N/A",
                 fontSize = 11.sp,
                 modifier = Modifier.weight(1f)
             )
@@ -180,7 +182,7 @@ fun CardPedido(pedidos: Pedidos) {
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(
-                text = pedidos.dataPedido.toString(),
+                text = pedidos.dataPedido?.toString() ?: "N/A",
                 fontSize = 9.sp,
                 modifier = Modifier.weight(1f)
             )
@@ -188,12 +190,13 @@ fun CardPedido(pedidos: Pedidos) {
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(
-                text = pedidos.formaPagamento,
+                text = pedidos.formaPagamento ?: "N/A",
                 fontSize = 11.sp,
                 modifier = Modifier.weight(1f)
             )
         }
     }
+    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @Preview(showBackground = true)
